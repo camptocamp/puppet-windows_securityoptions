@@ -1,0 +1,38 @@
+[Unicode]
+Unicode=yes
+[Privilege Rights]
+SeNetworkLogonRight = *S-1-5-11,*S-1-5-32-544
+SeMachineAccountPrivilege = *S-1-5-32-544
+SeBackupPrivilege = *S-1-5-32-544
+SeChangeNotifyPrivilege = *S-1-5-19,*S-1-5-20,*S-1-5-32-544,*S-1-5-32-545,*S-1-5-32-551
+SeSystemtimePrivilege = *S-1-5-19,*S-1-5-32-544
+SeCreatePagefilePrivilege = *S-1-5-32-544
+SeDebugPrivilege = *S-1-5-32-544
+SeRemoteShutdownPrivilege = *S-1-5-32-544
+SeAuditPrivilege = *S-1-5-19,*S-1-5-20,*S-1-5-32-568
+SeIncreaseQuotaPrivilege = *S-1-5-19,*S-1-5-20,*S-1-5-32-544,*S-1-5-32-568
+SeIncreaseBasePriorityPrivilege = *S-1-5-32-544
+SeLoadDriverPrivilege = *S-1-5-32-544
+SeLockMemoryPrivilege = *S-1-5-21
+SeBatchLogonRight = *S-1-5-32-544,*S-1-5-32-568
+SeServiceLogonRight = *S-1-5-32-544,*S-1-5-32-568,*S-1-5-80-0
+SeInteractiveLogonRight = *S-1-5-32-544
+SeSecurityPrivilege = *S-1-5-32-544
+SeSystemEnvironmentPrivilege = *S-1-5-32-544
+SeProfileSingleProcessPrivilege = *S-1-5-32-544
+SeSystemProfilePrivilege = *S-1-5-32-544,*S-1-5-80
+SeAssignPrimaryTokenPrivilege = *S-1-5-19,*S-1-5-20,*S-1-5-32-568
+SeRestorePrivilege = *S-1-5-32-544
+SeShutdownPrivilege = *S-1-5-32-544
+SeTakeOwnershipPrivilege = *S-1-5-32-544
+SeUndockPrivilege = *S-1-5-32-544
+SeManageVolumePrivilege = *S-1-5-32-544
+SeRemoteInteractiveLogonRight = *S-1-5-32-544,*S-1-5-32-555
+SeCreateGlobalPrivilege = *S-1-5-19,*S-1-5-20,*S-1-5-32-544,*S-1-5-6
+SeIncreaseWorkingSetPrivilege = *S-1-5-19,*S-1-5-32-544
+SeTimeZonePrivilege = *S-1-5-19,*S-1-5-32-544
+SeCreateSymbolicLinkPrivilege = *S-1-5-32-544
+SeDelegateSessionUserImpersonatePrivilege = *S-1-5-32-544
+[Version]
+signature="$CHICAGO$"
+Revision=1
