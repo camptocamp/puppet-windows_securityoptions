@@ -10,7 +10,7 @@ rescue LoadError
 end
 
 Puppet::Type.type(:so_systemaccess).provide(:so_systemaccess) do
-    require Pathname.new(__FILE__).dirname + '../../puppet_x/security_options/mappingtables'
+    require Pathname.new(__FILE__).dirname + '../../../puppet_x/security_options/mappingtables'
     defaultfor :osfamily => :windows
     confine :osfamily => :windows
 
@@ -102,10 +102,14 @@ Revision=1
    def self.getsystemaccess(out_file_path)
         ini = Puppet::Util::IniFile.new(out_file_path, '=')
         ini.get_settings('System Access').map { |k, v|
+            Puppet.debug k
+            Puppet.debug v
+            longname = Mappingtables.get_system_longname(k)
+            Puppet.debug longname
             #policy_hash = {
             
             new({
-                :name      => k,
+                :name      => longname,
                 :ensure    => :present,
                 :sovalue   => v,
             })

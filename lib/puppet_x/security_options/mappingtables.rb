@@ -1,7 +1,7 @@
 class Mappingtables
 
   def self.system_valid_name?(namevalue)
-        mysearch = system_mapping.find { |p| p['DisplayName'] == "#{namevalue}"}
+        mysearch = system_mapping.find { |p| p['DisplayName'].downcase == namevalue.downcase}
         if mysearch
           return true
         else
@@ -9,7 +9,7 @@ class Mappingtables
         end
   end
   def self.registry_valid_name?(namevalue)
-        mysearch = registry_mapping.find { |p| p['DisplayName'] == "#{namevalue}"}
+        mysearch = registry_mapping.find { |p| p['DisplayName'].downcase == namevalue.downcase}
         if mysearch
           return true
         else
@@ -17,6 +17,12 @@ class Mappingtables
         end
   end
 
+  def self.get_system_longname(namevalue)
+        Puppet.debug namevalue
+        mysearch = system_mapping.find { |p| p['name'].downcase == namevalue.downcase}
+        Puppet.debug mysearch
+        return mysearch['DisplayName']
+  end
 
   def self.system_mapping 
 

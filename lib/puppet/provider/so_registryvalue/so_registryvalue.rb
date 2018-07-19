@@ -10,7 +10,7 @@ rescue LoadError
 end
 
 Puppet::Type.type(:so_registryvalue).provide(:so_registryvalue) do
-    require Pathname.new(__FILE__).dirname + '../../puppet_x/security_options/mappingtables'
+    require Pathname.new(__FILE__).dirname + '../../../puppet_x/security_options/mappingtables'
     defaultfor :osfamily => :windows
     confine :osfamily => :windows
 

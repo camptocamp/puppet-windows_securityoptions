@@ -11,3 +11,10 @@ echo alias bundler="~/.gem/ruby/2.1.0/bin/bundler.ruby2.1" >> ~/.bashrc
 
 bundle install --path vendor/bundle
 bundle exec rake --tasks
+
+#to build the pkg
+bundle exec rake build
+
+#then in the pkg directory you can copy the folder to the puppet environment
+#for testing
+
