@@ -1,0 +1,19 @@
+{
+  "name": "johnnyboy-securityoptions",
+  "version": "0.1.0",
+  "author": "Johnny Boy",
+  "summary": "Puppet Security Options module",
+  "license": "Apache-2.0",
+  "source": "https://git.swissre.com/users/s8d32w/repos/puppet-securityoptions",
+  "project_page": "https://git.swissre.com/users/s8d32w/repos/puppet-securityoptions",
+  "issues_url": "https://git.swissre.com/users/s8d32w/repos/puppet-securityoptions",
+  "dependencies": [
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Windows",
+      "operatingsystemrelease": [
+      ]
+    }
+  ]
+}
