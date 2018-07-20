@@ -23,6 +23,13 @@ class Mappingtables
         Puppet.debug mysearch
         return mysearch['DisplayName']
   end
+  
+  def self.get_system_datatype(namevalue)
+        Puppet.debug namevalue
+        mysearch = system_mapping.find { |p| p['name'].downcase == namevalue.downcase}
+        Puppet.debug mysearch
+        return mysearch['data_type']
+  end
 
   def self.system_mapping 
 
@@ -31,85 +38,97 @@ class Mappingtables
 		'DisplayName' => 'Enforce password history',
 		'name' => 'PasswordHistorySize',
 		'policy_type' => 'System Access',
+		'data_type' => 'integer',
 	},
 	{
 		'DisplayName' => 'Maximum password age',
 		'name' => 'MaximumPasswordAge',
 		'policy_type' => 'System Access',
+		'data_type' => 'integer',
 	},
 	{
 		'DisplayName' => 'Minimum password age',
 		'name' => 'MinimumPasswordAge',
 		'policy_type' => 'System Access',
+		'data_type' => 'integer',
 	},
 	{
 		'DisplayName' => 'Minimum password length',
 		'name' => 'MinimumPasswordLength',
 		'policy_type' => 'System Access',
+		'data_type' => 'integer',
 	},
 	{
 		'DisplayName' => 'Password must meet complexity requirements',
 		'name' => 'PasswordComplexity',
 		'policy_type' => 'System Access',
+		'data_type' => 'integer',
 	},
 	{
 		'DisplayName' => 'Store passwords using reversible encryption',
 		'name' => 'ClearTextPassword',
 		'policy_type' => 'System Access',
+		'data_type' => 'integer',
 	},
 	{
 		'DisplayName' => 'Account lockout threshold',
 		'name' => 'LockoutBadCount',
 		'policy_type' => 'System Access',
+		'data_type' => 'integer',
 	},
 	{
 		'DisplayName' => 'Account lockout duration',
 		'name' => 'LockoutDuration',
 		'policy_type' => 'System Access',
+		'data_type' => 'integer',
 	},
 	{
 		'DisplayName' => 'Reset account lockout counter after',
 		'name' => 'ResetLockoutCount',
 		'policy_type' => 'System Access',
+		'data_type' => 'integer',
 	},
 	{
 		'DisplayName' => 'Network security: Force logoff when logon hours expire',
 		'name' => 'ForceLogoffWhenHourExpire',
 		'policy_type' => 'System Access',
+		'data_type' => 'integer',
 	},
 	{
 		'DisplayName' => 'Accounts: Rename administrator account',
 		'name' => 'NewAdministratorName',
 		'policy_type' => 'System Access',
-		'data_type' => 'quoted_string',
+		'data_type' => 'string',
 	},
 	{
 		'DisplayName' => 'Accounts: Administrator account status',
 		'name' => 'EnableAdminAccount',
 		'policy_type' => 'System Access',
-		'data_type' => 'quoted_string',
+		'data_type' => 'integer',
 	},
 	{
 		'DisplayName' => 'Accounts: Guest account status',
 		'name' => 'EnableGuestAccount',
 		'policy_type' => 'System Access',
-		'data_type' => 'quoted_string',
+		'data_type' => 'integer',
 	},
 	{
 		'DisplayName' => 'Accounts: Rename guest account',
 		'name' => 'NewGuestName',
 		'policy_type' => 'System Access',
-		'data_type' => 'quoted_string',
+		'data_type' => 'string',
 	},
 	{
 		'DisplayName' => 'Accounts: Require Login to Change Password',
 		'name' => 'RequireLogonToChangePassword',
 		'policy_type' => 'System Access',
+		'data_type' => 'integer',
 	},
 	{
 		'DisplayName' => 'Network access: Allow anonymous SID/Name translation',
 		'name' => 'LSAAnonymousNameLookup',
 		'policy_type' => 'System Access',
+		'data_type' => 'integer',
 	},
 ]
 end

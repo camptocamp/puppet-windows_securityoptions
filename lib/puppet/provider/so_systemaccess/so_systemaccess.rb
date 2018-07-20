@@ -3,10 +3,10 @@ require 'pathname'
 
 
 begin
-  require File.expand_path('../../../util/ini_file', __FILE__)
+  #require File.expand_path('../../../util/ini_file', __FILE__)
 rescue LoadError
   # in case we're not in libdir
-  require File.expand_path('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file', __FILE__)
+  #require File.expand_path('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file', __FILE__)
 end
 
 Puppet::Type.type(:so_systemaccess).provide(:so_systemaccess) do
@@ -105,17 +105,17 @@ Revision=1
             Puppet.debug k
             Puppet.debug v
             longname = Mappingtables.get_system_longname(k)
+            datatype = Mappingtables.get_system_datatype(k)
             Puppet.debug longname
-            #policy_hash = {
+            if datatype == 'integer'
+              v = v.to_i
+            end
             
             new({
                 :name      => longname,
                 :ensure    => :present,
                 :sovalue   => v,
             })
-            #inst = new(policy_hash)
-            #systemaccess_hash << inst
-            #systemaccess_hash << inst
         }
 
    end
