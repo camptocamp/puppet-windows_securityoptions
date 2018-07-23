@@ -21,8 +21,10 @@ Puppet::Type.newtype(:so_systemaccess) do
 
     newproperty(:sovalue) do
       desc 'the value for the setting'
+      Puppet.debug "resource name"
+      Puppet.debug @resource[:name]
       validate do |value|
-        datatype = Mappingtables.get_system_datatype(resource[:name])
+        datatype = Mappingtables.get_system_datatype(@resource[:name])
         if datatype == 'integer' then
           raise ArgumentError, "Invalid value: #{value}.  This must be a number" unless  value.is_a?(Integer)
         elsif datatype == 'string' then
@@ -33,7 +35,7 @@ Puppet::Type.newtype(:so_systemaccess) do
 
       end
       munge do |value|
-        datatype = Mappingtables.get_system_datatype(resource[:name])
+        datatype = Mappingtables.get_system_datatype(@resource[:name])
         if datatype == 'integer' then
           value.to_i
         end
