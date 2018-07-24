@@ -486,10 +486,6 @@ class SecurityPolicy
             },
 
         }
-
-
-
-
     end
 end
 
