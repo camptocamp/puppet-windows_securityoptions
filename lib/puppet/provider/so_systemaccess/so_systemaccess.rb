@@ -3,7 +3,7 @@ require 'pathname'
 
 
 begin
-  #require File.expand_path('../../../util/ini_file', __FILE__)
+  require File.expand_path('../../../util/ini_file', __FILE__)
 rescue LoadError
   # in case we're not in libdir
   #require File.expand_path('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file', __FILE__)
@@ -47,7 +47,7 @@ Puppet::Type.type(:so_systemaccess).provide(:so_systemaccess) do
         dir = File.join(Puppet[:vardir], 'secedit_export')
         Dir.mkdir(dir) unless Dir.exist?(dir)
 
-        File.open(in_file_path(securityoption), 'w') do |f|
+        File.open(  in_file_path(securityoption).scan(/[\da-z]/i).join  , 'w') do |f|
           f.write <<-EOF
 [Unicode]
 Unicode=yes
@@ -61,7 +61,7 @@ Revision=1
     end
 
     def flush
-        secedit('/configure', '/db', 'secedit.sdb', '/cfg', in_file_path(@resource[:name]))
+        secedit('/configure', '/db', 'secedit.sdb', '/cfg', in_file_path(@resource[:name]).scan(/[\da-z]/i).join  )
     end
 
 
@@ -105,7 +105,7 @@ Revision=1
             Puppet.debug k
             Puppet.debug v
             longname = Mappingtables.get_system_longname(k)
-            datatype = Mappingtables.get_system_datatype(k)
+            datatype = Mappingtables.get_system_datatype(longname)
             Puppet.debug longname
             if datatype == 'integer'
               v = v.to_i
