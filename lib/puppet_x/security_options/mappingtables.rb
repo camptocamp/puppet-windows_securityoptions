@@ -26,7 +26,7 @@ class Mappingtables
   
   def self.get_system_datatype(namevalue)
         Puppet.debug namevalue
-        mysearch = system_mapping.find { |p| p['name'].downcase == namevalue.downcase}
+        mysearch = system_mapping.find { |p| p['DisplayName'].downcase == namevalue.downcase}
         Puppet.debug mysearch
         return mysearch['data_type']
   end

@@ -12,7 +12,7 @@ describe Puppet::Type.type(:so_systemaccess) do
     context 'when validating name' do
         it 'should accept a valid string' do
             res = described_class.new(:title => valid_sa)
-            expect(res[:name]).to eq(valid_sa.downcase)
+            expect(res[:name].downcase).to eq(valid_sa.downcase)
         end
 
         it 'should fail with an invalid right' do
