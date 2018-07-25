@@ -64,7 +64,7 @@
       "DisplayName": "Accounts: Rename administrator account",
       "name": "NewAdministratorName",
       "policy_type": "System Access",
-      "data_type": "string"
+      "data_type": "qstring"
     },
     {
       "DisplayName": "Accounts: Administrator account status",
@@ -82,7 +82,7 @@
       "DisplayName": "Accounts: Rename guest account",
       "name": "NewGuestName",
       "policy_type": "System Access",
-      "data_type": "string"
+      "data_type": "qstring"
     },
     {
       "DisplayName": "Accounts: Require Login to Change Password",

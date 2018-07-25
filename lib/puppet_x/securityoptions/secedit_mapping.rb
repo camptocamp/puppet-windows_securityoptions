@@ -10,10 +10,17 @@ module PuppetX
       def mapping_table_file
         File.join(File.dirname(__FILE__), 'secedit_mapping.json')
       end
+      def get_displayname(namevalue,category)
+        Puppet.debug namevalue
+        Puppet.debug category
+        mysearch = mapping_table[category].find { |p| p['name'].downcase == namevalue.downcase}
+        Puppet.debug mysearch
+        return mysearch['DisplayName']
+      end
+
       def valid_name?(namevalue, category)
-        mappings = mapping_table
-        mysearch = mappings[category].find { |p| p['DisplayName'].downcase == namevalue.downcase}
-        if mysearch
+        mapping = mapping_table[category].find { |p| p['DisplayName'].downcase == namevalue.downcase}
+        if mapping 
           return true
         else
           return false

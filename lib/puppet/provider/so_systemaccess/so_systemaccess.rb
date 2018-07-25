@@ -10,7 +10,7 @@ rescue LoadError
 end
 
 Puppet::Type.type(:so_systemaccess).provide(:so_systemaccess) do
-    require Pathname.new(__FILE__).dirname + '../../../puppet_x/security_options/mappingtables'
+    require Pathname.new(__FILE__).dirname + '../../../puppet_x/securityoptions/secedit_mapping'
     defaultfor :osfamily => :windows
     confine :osfamily => :windows
 
@@ -104,15 +104,15 @@ Revision=1
         ini.get_settings('System Access').map { |k, v|
             Puppet.debug k
             Puppet.debug v
-            longname = Mappingtables.get_system_longname(k)
-            datatype = Mappingtables.get_system_datatype(longname)
-            Puppet.debug longname
-            if datatype == 'integer'
+            res_displayname= PuppetX::Securityoptions::Mappingtables.new.get_displayname(k,'SystemAccess')
+            res_mapping = PuppetX::Securityoptions::Mappingtables.new.get_mapping(res_displayname,'SystemAccess')
+            Puppet.debug res_displayname
+            if res_mapping['data_type'] == 'integer'
               v = v.to_i
             end
             
             new({
-                :name      => longname,
+                :name      => res_displayname,
                 :ensure    => :present,
                 :sovalue   => v,
             })
