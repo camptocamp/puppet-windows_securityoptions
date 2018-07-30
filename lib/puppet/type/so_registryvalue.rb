@@ -1,7 +1,7 @@
 require 'pathname'
 
 Puppet::Type.newtype(:so_registryvalue) do
-    require Pathname.new(__FILE__).dirname + '../../puppet_x/security_options/mappingtables'
+    require Pathname.new(__FILE__).dirname + '../../puppet_x/securityoptions/mappingtables'
     @doc = <<-'EOT'
     Manage a Windows User Rights Assignment.
     EOT
