@@ -40,19 +40,28 @@ Puppet::Type.type(:so_systemaccess).provide(:so_systemaccess) do
     end
 
     def in_file_path(securityoption)
-        File.join(Puppet[:vardir], 'secedit_export', "#{securityoption}.txt").gsub('/', '\\')
+        fixup_name = securityoption.scan(/[\da-z]/i).join
+        File.join(Puppet[:vardir], 'secedit_export', "#{fixup_name}.txt").gsub('/', '\\')
     end
 
     def write_export(securityoption, value)
+        Puppet.debug "what is securityoption" 
+        Puppet.debug securityoption
+        Puppet.debug "what is securityoption" 
+
+        res_mapping = PuppetX::Securityoptions::Mappingtables.new.get_mapping(securityoption,'SystemAccess')
+        Puppet.debug "what is res mapping" 
+        Puppet.debug res_mapping
+        Puppet.debug "what is res mapping"
         dir = File.join(Puppet[:vardir], 'secedit_export')
         Dir.mkdir(dir) unless Dir.exist?(dir)
 
-        File.open(  in_file_path(securityoption).scan(/[\da-z]/i).join  , 'w') do |f|
+        File.open(  in_file_path(securityoption)  , 'w') do |f|
           f.write <<-EOF
 [Unicode]
 Unicode=yes
 [System Access]
-#{securityoption} = #{value}
+#{res_mapping['name']} = #{value}
 [Version]
 signature="$CHICAGO$"
 Revision=1
@@ -61,7 +70,7 @@ Revision=1
     end
 
     def flush
-        secedit('/configure', '/db', 'secedit.sdb', '/cfg', in_file_path(@resource[:name]).scan(/[\da-z]/i).join  )
+        secedit('/configure', '/db', 'secedit.sdb', '/cfg', in_file_path(@resource[:name])  )
     end
 
 
