@@ -30,9 +30,9 @@ Puppet::Type.newtype(:so_systemaccess) do
       #end
       validate do |value|
         mapping = PuppetX::Securityoptions::Mappingtables.new
-        Puppet.debug "resource name"
-        Puppet.debug resource[:name]
-        Puppet.debug "resource name"
+        #Puppet.debug "resource name"
+        #Puppet.debug resource[:name]
+        #Puppet.debug "resource name"
         res_mapping      = mapping.get_mapping(resource[:name], 'SystemAccess')
         #Puppet.debug "data_type"
         #Puppet.debug res_mapping['data_type']

@@ -11,10 +11,10 @@ module PuppetX
         File.join(File.dirname(__FILE__), 'secedit_mapping.json')
       end
       def get_displayname(namevalue,category)
-        Puppet.debug namevalue
-        Puppet.debug category
+        #Puppet.debug namevalue
+        #Puppet.debug category
         mysearch = mapping_table[category].find { |p| p['name'].downcase == namevalue.downcase}
-        Puppet.debug mysearch
+        #Puppet.debug mysearch
         return mysearch['DisplayName']
       end
 
