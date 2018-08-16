@@ -2,8 +2,9 @@ require 'spec_helper'
 
 describe Puppet::Type.type(:so_registryvalue) do
     let(:valid_name) { 'Shutdown: Clear virtual memory pagefile' }
+    let(:invalid_name) { 'Shutdown: Why do you want to shutdown' }
     #I pulled this from the spec filr for acl module .. spec/unit/puppet/type/acl_spec.rb
-    let(:resource) { Puppet::Type.type(:so_registryvalue).new(:name => valid_name) }
+    let(:resource) { Puppet::Type.type(:so_registryvalue).new(:name => valid_name, :title => valid_name) }
     let(:provider) { Puppet::Provider.new(resource) }
     let(:catalog)  { Puppet::Resource::Catalog.new }
 
@@ -36,10 +37,23 @@ describe Puppet::Type.type(:so_registryvalue) do
       resource.parameters[:name].isnamevar?.should be_truthy
     end
 
+    it 'should fail with an invalid name' do
+        expect {
+            described_class.new(
+                :name => invalid_name,
+            )
+        }.to raise_error(Puppet::ResourceError, /Invalid Policy name: \'Shutdown: Why do you want to shutdown\'/)
+    end
+    it 'should pass with a valid name' do
+        expect {
+            described_class.new(
+                :name => valid_name,
+            )
+        }.should be_truthy
+    end
+
+
   end
-
-
-
 
 
 
