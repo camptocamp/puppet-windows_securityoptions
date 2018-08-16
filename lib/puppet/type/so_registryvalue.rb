@@ -11,6 +11,7 @@ Puppet::Type.newtype(:so_registryvalue) do
         defaultto { :present }
     end
 
+    #newparam(:name, :namevar => true) do
     newparam(:name, :namevar => true) do
     #    desc 'The long name of the setting as it shows up in the local security policy'
     #  validate do |value|

@@ -2,6 +2,10 @@ require 'spec_helper'
 
 describe Puppet::Type.type(:so_registryvalue) do
     let(:valid_name) { 'Shutdown: Clear virtual memory pagefile' }
+    #I pulled this from the spec filr for acl module .. spec/unit/puppet/type/acl_spec.rb
+    let(:resource) { Puppet::Type.type(:so_registryvalue).new(:name => valid_name) }
+    let(:provider) { Puppet::Provider.new(resource) }
+    let(:catalog)  { Puppet::Resource::Catalog.new }
 
     context 'when validating ensure' do
         it 'should be ensurable' do
@@ -22,6 +26,17 @@ describe Puppet::Type.type(:so_registryvalue) do
         end
     end
 
+  context 'name parameter' do
+  #I pulled this from ura, but it does not fail when namevar is not set
+  #so I am not sure what this is checking
+    it 'should have a namevar' do
+      expect(described_class.key_attributes).to eq([:name])
+    end
+    it "should be the name var" do
+      resource.parameters[:name].isnamevar?.should be_truthy
+    end
+
+  end
 
 
 
