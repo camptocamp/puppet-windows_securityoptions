@@ -21,7 +21,43 @@ Puppet::Type.newtype(:so_registryvalue) do
     end
 #
     newproperty(:regvalue) do
-#        desc 'the value for the setting'
-#
+      desc "hello" 
+
+      validate do |value|
+
+        res_mapping = PuppetX::Securityoptions::Mappingtables.new.get_mapping(resource[:name], 'RegistryValues')
+        if res_mapping['reg_type'] == '4' then
+          raise ArgumentError, "Invalid value: \'#{value}\'.  This must be a number" unless (Integer(value) rescue false)
+        elsif res_mapping['reg_type'] == '1' then
+          #raise ArgumentError, "Invalid value: \'#{value}\'.  This must be a quoted string" unless value.is_a?(String)
+          raise ArgumentError, "Invalid value: \'#{value}\'.  This must be a quoted string" unless value.to_s
+        elsif res_mapping['reg_type'] == '7' then
+          #raise ArgumentError, "Invalid value: \'#{value}\'.  This must be a quoted string" unless value.is_a?(String)
+          raise ArgumentError, "Invalid value: \'#{value}\'.  This must be an array" unless ( Array(value) or value.nil? )
+        elsif res_mapping['reg_type'] != '4' and res_mapping['reg_type'] != '1'
+          raise ArgumentError, "Invalid DataType: \'#{value}\' in Mappingtables"
+        end
+      end
+
+      munge do |value|
+        res_mapping = PuppetX::Securityoptions::Mappingtables.new.get_mapping(resource[:name], 'RegistryValues')
+        if res_mapping['reg_type'] == '4' then
+          value.to_i 
+        elsif res_mapping['reg_type'] == '1' then
+          value = value.to_s 
+          value = "\"" + value.tr('"', '') + "\""
+        elsif res_mapping['reg_type'] == '7' then 
+          #if value.empty? then
+          #  value = []
+          #else
+          #  Array(value) unless value.kind_of?(Array)
+          #end
+          value = Array(value)
+          if value.nil? then
+            value = []
+          end        
+        end
+
+      end
     end
 end

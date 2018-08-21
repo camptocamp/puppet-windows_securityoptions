@@ -8,7 +8,15 @@ describe Puppet::Type.type(:so_registryvalue) do
     let(:provider) { Puppet::Provider.new(resource) }
     let(:catalog)  { Puppet::Resource::Catalog.new }
 
-    context 'when validating ensure' do
+    let(:int_resource_name) {'Network security: LAN Manager authentication level'}
+    let(:str_resource_name) {'Interactive logon: Smart card removal behavior'}
+    let(:msz_resource_name) {'System settings: Optional subsystems'}
+
+    let(:resourceint) { Puppet::Type.type(:so_registryvalue).new(:name => int_resource_name) }
+    let(:resourcestr) { Puppet::Type.type(:so_registryvalue).new(:name => str_resource_name) }
+    let(:resourcemsz) { Puppet::Type.type(:so_registryvalue).new(:name => msz_resource_name) }
+    
+  context 'when validating ensure' do
         it 'should be ensurable' do
             expect(described_class.attrtype(:ensure)).to eq(:property)
         end
@@ -55,6 +63,53 @@ describe Puppet::Type.type(:so_registryvalue) do
 
   end
 
+  context 'so_value property' do
+    it 'if type 1 should return quoted string, even if it is not quoted' do
+        resourcestr[:regvalue] = 'quoatedstring' 
+        expect(resourcestr[:regvalue]).to eq('"quoatedstring"')
+    end
+    it 'if type 1 should return quoted string, even if it is passed an integer' do
+        resourcestr[:regvalue] = 4 
+        expect(resourcestr[:regvalue]).to eq('"4"')
+    end
+    it 'if type 1 should return quoted string if it is already quoated' do
+        resourcestr[:regvalue] = '"quoatedstring"' 
+        expect(resourcestr[:regvalue]).to eq('"quoatedstring"')
+    end
+    it 'if type 4 should return integer when passed integer' do
+        resourceint[:regvalue] = 0
+        expect(resourceint[:regvalue]).to be_a(Integer)
+    end
+    it 'if type 4 should return integer when passed string that can be converted to integer' do
+        resourceint[:regvalue] ="0" 
+        expect(resourceint[:regvalue]).to be_a(Integer)
+    end
+    it 'if type 4 should fail when passed a string that cannot be converted to an integer' do
+      expect {
+        resourceint[:regvalue] = "0whatisit1"
+      }.to raise_error(Puppet::ResourceError, /Invalid value: \'0whatisit1\'.  This must be a number/)
+    end
+    it 'if type 7 should return array if passed a string' do
+        resourcemsz[:regvalue] = '0' 
+        expect(resourcemsz[:regvalue]).to be_an_instance_of(Array) | be_nil
+    end
+    it 'if type 7 should return array if passed an integer' do
+        resourcemsz[:regvalue] = 0 
+        expect(resourcemsz[:regvalue]).to be_an_instance_of(Array) | be_nil
+    end
+    it 'if type 7 should return array if passed an empty string' do
+        resourcemsz[:regvalue] = '' 
+        expect(resourcemsz[:regvalue]).to be_an_instance_of(Array) | be_nil
+    end
+    it 'if type 7 should return array if passed an empty array' do
+        resourcemsz[:regvalue] = [] 
+        expect(resourcemsz[:regvalue]).to be_an_instance_of(Array) | be_nil
+    end
+    it 'if type 7 should return array if passed an array with entries' do
+        resourcemsz[:regvalue] = ['Entry1'] 
+        expect(resourcemsz[:regvalue]).to be_an_instance_of(Array) | be_nil
+    end
 
+  end
 
 end
