@@ -26,16 +26,20 @@ Puppet::Type.newtype(:so_registryvalue) do
       validate do |value|
 
         res_mapping = PuppetX::Securityoptions::Mappingtables.new.get_mapping(resource[:name], 'RegistryValues')
+        Puppet.debug res_mapping
         if res_mapping['reg_type'] == '4' then
           raise ArgumentError, "Invalid value: \'#{value}\'.  This must be a number" unless (Integer(value) rescue false)
         elsif res_mapping['reg_type'] == '1' then
           #raise ArgumentError, "Invalid value: \'#{value}\'.  This must be a quoted string" unless value.is_a?(String)
           raise ArgumentError, "Invalid value: \'#{value}\'.  This must be a quoted string" unless value.to_s
+        elsif res_mapping['reg_type'] == '3' then
+          #raise ArgumentError, "Invalid value: \'#{value}\'.  This must be a quoted string" unless value.is_a?(String)
+          raise ArgumentError, "Invalid value: \'#{value}\'.  This must be a 1 or 0" unless (value.to_i == 0 or value.to_i == 1)
         elsif res_mapping['reg_type'] == '7' then
           #raise ArgumentError, "Invalid value: \'#{value}\'.  This must be a quoted string" unless value.is_a?(String)
           raise ArgumentError, "Invalid value: \'#{value}\'.  This must be an array" unless ( Array(value) or value.nil? )
         elsif res_mapping['reg_type'] != '4' and res_mapping['reg_type'] != '1'
-          raise ArgumentError, "Invalid DataType: \'#{value}\' in Mappingtables"
+          raise ArgumentError, "Invalid DataType: \'#{res_mapping['reg_type']}\' in Mappingtables"
         end
       end
 
