@@ -151,7 +151,7 @@ describe Puppet::Type.type(:so_registryvalue).provider(:so_registryvalue) do
         expect(Puppet).to receive(:[]).at_least(:once).with(:cachedir).and_return(cachedir)
         expect(Dir).to receive(:mkdir).at_least(:once).with(File.join(cachedir, 'rvimports'))
         writeFile = StringIO.new
-        expect(File).to receive(:open).at_least(:once).with("C:\\ProgramData\\PuppetLabs\\Puppet\\cache\\rvimports\\Audit: Audit the use of Backup and Restore privilege.txt", 'w').and_yield(writeFile)
+        expect(File).to receive(:open).at_least(:once).with("C:\\ProgramData\\PuppetLabs\\Puppet\\cache\\rvimports\\AuditAudittheuseofBackupandRestoreprivilege.txt", 'w').and_yield(writeFile)
         expect(writeFile).to receive(:write).with("[Unicode]
 Unicode=yes
 [Registry Values]
@@ -172,7 +172,7 @@ Revision=1
             expect(provider.regvalue).to eq(nil)
             provider.regvalue=3
             expect(provider.regvalue).to eq(3)
-            stub_flush("C:\\ProgramData\\PuppetLabs\\Puppet\\cache\\rvimports\\Audit: Audit the use of Backup and Restore privilege.txt")
+            stub_flush("C:\\ProgramData\\PuppetLabs\\Puppet\\cache\\rvimports\\AuditAudittheuseofBackupandRestoreprivilege.txt")
             provider.flush
         end
     end

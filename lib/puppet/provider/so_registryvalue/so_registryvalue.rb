@@ -39,6 +39,7 @@ Puppet::Type.type(:so_registryvalue).provide(:so_registryvalue) do
     end
 
     def in_file_path(securityoption)
+        securityoption = securityoption.scan(/[\da-z]/i).join
         File.join(Puppet[:cachedir], 'rvimports', "#{securityoption}.txt").gsub('/', '\\')
     end
 
