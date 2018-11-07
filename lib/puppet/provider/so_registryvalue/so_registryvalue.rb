@@ -1,7 +1,6 @@
 require 'puppet/util/windows'
 require 'pathname'
 
-
 begin
   require File.expand_path('../../../util/ini_file', __FILE__)
 rescue LoadError
@@ -44,6 +43,7 @@ Puppet::Type.type(:so_registryvalue).provide(:so_registryvalue) do
     end
 
     def write_export(securityoption, value)
+
         dir = File.join(Puppet[:cachedir], 'rvimports')
         Dir.mkdir(dir) unless Dir.exist?(dir)
 
@@ -84,18 +84,10 @@ Revision=1
     end
 
     def self.instances
-        settings = []
-        inst1 = []
-        registryvalues_hash=[]
         out_file_path = File.join(Puppet[:cachedir], 'rvsecurityoptionsoutput.txt').gsub('/', '\\')
         # Once the file exists in UTF-8, secedit will also use UTF-8
         File.open(out_file_path, 'w') { |f| f.write('# We want UTF-8') }
         secedit('/export', '/cfg', out_file_path, '/areas', 'securitypolicy')
-        #inst1=getregistryvalues(out_file_path)
-        #puts inst1.class
-        #inst2=getsystemaccess(out_file_path)
-        #puts inst2.class
-        #puts inst2
         return getregistryvalues(out_file_path) 
     end
 
@@ -109,22 +101,15 @@ Revision=1
         if res_mapping['reg_type'] == '3' || res_mapping['reg_type'] == '4' then
           value = value.to_i
         elsif res_mapping['reg_type'] == '7' then
-          if value.nil? then
-            value = []
-          else
-            value = value.split(',')
-          end
+          value = value.split(',')
         elsif res_mapping['reg_type'] == '4' then
         end
 
-        #policy_hash = {
         new({
           :name      => res_displayname,
           :ensure    => :present,
           :regvalue   => value,
         })
-        #inst = new(policy_hash)
-        #registryvalues_hash << inst
       }
 
    end

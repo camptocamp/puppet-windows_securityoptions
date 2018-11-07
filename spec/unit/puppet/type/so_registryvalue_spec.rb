@@ -35,7 +35,7 @@ describe Puppet::Type.type(:so_registryvalue) do
         end
     end
 
-  context 'name parameter' do
+  context 'when setting name parameter' do
   #I pulled this from ura, but it does not fail when namevar is not set
   #so I am not sure what this is checking
     it 'should have a namevar' do
@@ -63,7 +63,7 @@ describe Puppet::Type.type(:so_registryvalue) do
 
   end
 
-  context 'so_value property' do
+  context 'when setting so_value property' do
     it 'if type 1 should return quoted string, even if it is not quoted' do
         resourcestr[:regvalue] = 'quoatedstring' 
         expect(resourcestr[:regvalue]).to eq('"quoatedstring"')
@@ -78,11 +78,11 @@ describe Puppet::Type.type(:so_registryvalue) do
     end
     it 'if type 4 should return integer when passed integer' do
         resourceint[:regvalue] = 0
-        expect(resourceint[:regvalue]).to be_a(Integer)
+        expect(resourceint[:regvalue]).to eq(0)
     end
     it 'if type 4 should return integer when passed string that can be converted to integer' do
         resourceint[:regvalue] ="0" 
-        expect(resourceint[:regvalue]).to be_a(Integer)
+        expect(resourceint[:regvalue]).to eq(0)
     end
     it 'if type 4 should fail when passed a string that cannot be converted to an integer' do
       expect {
@@ -91,23 +91,19 @@ describe Puppet::Type.type(:so_registryvalue) do
     end
     it 'if type 7 should return array if passed a string' do
         resourcemsz[:regvalue] = '0' 
-        expect(resourcemsz[:regvalue]).to be_an_instance_of(Array) | be_nil
+        expect(resourcemsz[:regvalue]).to eq(['0'])
     end
     it 'if type 7 should return array if passed an integer' do
         resourcemsz[:regvalue] = 0 
-        expect(resourcemsz[:regvalue]).to be_an_instance_of(Array) | be_nil
+        expect(resourcemsz[:regvalue]).to eq([0])
     end
     it 'if type 7 should return array if passed an empty string' do
         resourcemsz[:regvalue] = '' 
-        expect(resourcemsz[:regvalue]).to be_an_instance_of(Array) | be_nil
-    end
-    it 'if type 7 should return array if passed an empty array' do
-        resourcemsz[:regvalue] = [] 
-        expect(resourcemsz[:regvalue]).to be_an_instance_of(Array) | be_nil
+        expect(resourcemsz[:regvalue]).to eq([''])
     end
     it 'if type 7 should return array if passed an array with entries' do
         resourcemsz[:regvalue] = ['Entry1'] 
-        expect(resourcemsz[:regvalue]).to be_an_instance_of(Array) | be_nil
+        expect(resourcemsz[:regvalue]).to eq(['Entry1'])
     end
 
   end
