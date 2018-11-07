@@ -61,7 +61,8 @@ Revision=1
     end
 
     def flush
-        secedit('/configure', '/db', 'secedit.sdb', '/cfg', in_file_path(@resource[:name]))
+        tmp_sdb_file = File.join(Puppet[:cachedir], 'secedit.sdb').gsub('/', '\\')
+        secedit('/configure', '/db', tmp_sdb_file, '/cfg', in_file_path(@resource[:name]))
     end
 
 
