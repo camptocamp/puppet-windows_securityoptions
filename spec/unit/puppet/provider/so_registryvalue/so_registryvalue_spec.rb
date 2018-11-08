@@ -33,6 +33,9 @@ describe Puppet::Type.type(:so_registryvalue).provider(:so_registryvalue) do
     let(:out_file) do
         File.join(cachedir, '/rvsecurityoptionsoutput.txt').gsub('/', '\\')
     end
+    let(:tmp_sdb_file) do
+        File.join(cachedir, '/secedit.sdb').gsub('/', '\\')
+    end
 
     def stub_secedit_export
         ini_stub = Puppet::Util::IniFile.new(File.join(
@@ -163,7 +166,7 @@ Revision=1
     end
 
     def stub_flush(path)
-        expect(provider.class).to receive(:secedit).at_least(:once).with('/configure', '/db', 'secedit.sdb', '/cfg', path)
+        expect(provider.class).to receive(:secedit).at_least(:once).with('/configure', '/db', tmp_sdb_file, '/cfg', path)
     end
 
     context 'when updating value' do
