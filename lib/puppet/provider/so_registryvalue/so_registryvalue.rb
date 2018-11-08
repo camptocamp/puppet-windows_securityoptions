@@ -4,6 +4,8 @@ require 'pathname'
 begin
   require File.expand_path('../../../util/ini_file', __FILE__)
 rescue LoadError
+  #require File.expand_path('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file', __FILE__) if File.file?('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file')
+
   # in case we're not in libdir
   require File.expand_path('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file', __FILE__)
 end
@@ -40,12 +42,13 @@ Puppet::Type.type(:so_registryvalue).provide(:so_registryvalue) do
 
     def in_file_path(securityoption)
         securityoption = securityoption.scan(/[\da-z]/i).join
-        File.join(Puppet[:cachedir], 'rvimports', "#{securityoption}.txt").gsub('/', '\\')
+        File.join(Puppet[:vardir], 'rvimports', "#{securityoption}.txt").gsub('/', '\\')
     end
 
     def write_export(securityoption, value)
+        res_mapping = PuppetX::Securityoptions::Mappingtables.new.get_mapping(securityoption, 'RegistryValues')
 
-        dir = File.join(Puppet[:cachedir], 'rvimports')
+        dir = File.join(Puppet[:vardir], 'rvimports')
         Dir.mkdir(dir) unless Dir.exist?(dir)
 
         File.open(in_file_path(securityoption), 'w') do |f|
@@ -53,7 +56,7 @@ Puppet::Type.type(:so_registryvalue).provide(:so_registryvalue) do
 [Unicode]
 Unicode=yes
 [Registry Values]
-#{securityoption} = #{value}
+#{res_mapping['name']} = #{res_mapping['reg_type']},#{value}
 [Version]
 signature="$CHICAGO$"
 Revision=1
@@ -62,7 +65,7 @@ Revision=1
     end
 
     def flush
-        tmp_sdb_file = File.join(Puppet[:cachedir], 'secedit.sdb').gsub('/', '\\')
+        tmp_sdb_file = File.join(Puppet[:vardir], 'secedit.sdb').gsub('/', '\\')
         secedit('/configure', '/db', tmp_sdb_file, '/cfg', in_file_path(@resource[:name]))
     end
 
@@ -86,7 +89,8 @@ Revision=1
     end
 
     def self.instances
-        out_file_path = File.join(Puppet[:cachedir], 'rvsecurityoptionsoutput.txt').gsub('/', '\\')
+        out_file_path = File.join(Puppet[:vardir], 'rvsecurityoptionsoutput.txt').gsub('/', '\\')
+        Puppet.debug out_file_path
         # Once the file exists in UTF-8, secedit will also use UTF-8
         File.open(out_file_path, 'w') { |f| f.write('# We want UTF-8') }
         secedit('/export', '/cfg', out_file_path, '/areas', 'securitypolicy')
@@ -103,9 +107,16 @@ Revision=1
         if res_mapping['reg_type'] == '3' || res_mapping['reg_type'] == '4' then
           value = value.to_i
         elsif res_mapping['reg_type'] == '7' then
-          value = value.split(',')
+          value = value || ''
         elsif res_mapping['reg_type'] == '4' then
         end
+        Puppet.debug "this is my name"
+        Puppet.debug res_displayname 
+        Puppet.debug "this is my value"
+        Puppet.debug value
+        Puppet.debug "this is my type"
+        Puppet.debug value.Class
+
 
         new({
           :name      => res_displayname,

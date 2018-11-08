@@ -89,22 +89,22 @@ describe Puppet::Type.type(:so_registryvalue) do
         resourceint[:regvalue] = "0whatisit1"
       }.to raise_error(Puppet::ResourceError, /Invalid value: \'0whatisit1\'.  This must be a number/)
     end
-    it 'if type 7 should return array if passed a string' do
+    it 'if type 7 should return a string if passed a string' do
         resourcemsz[:regvalue] = '0' 
-        expect(resourcemsz[:regvalue]).to eq(['0'])
+        expect(resourcemsz[:regvalue]).to eq('0')
     end
-    it 'if type 7 should return array if passed an integer' do
+    it 'if type 7 should return a string if passed an integer' do
         resourcemsz[:regvalue] = 0 
-        expect(resourcemsz[:regvalue]).to eq([0])
+        expect(resourcemsz[:regvalue]).to eq('0')
     end
-    it 'if type 7 should return array if passed an empty string' do
+    it 'if type 7 should return an empty string if passed an empty string' do
         resourcemsz[:regvalue] = '' 
-        expect(resourcemsz[:regvalue]).to eq([''])
+        expect(resourcemsz[:regvalue]).to eq('')
     end
-    it 'if type 7 should return array if passed an array with entries' do
-        resourcemsz[:regvalue] = ['Entry1'] 
-        expect(resourcemsz[:regvalue]).to eq(['Entry1'])
-    end
+    #it 'if type 7 should return array if passed an array with entries' do
+    #    resourcemsz[:regvalue] = ['Entry1'] 
+    #    expect(resourcemsz[:regvalue]).to eq('Entry1')
+    #end
 
   end
 

@@ -26,21 +26,21 @@ describe Puppet::Type.type(:so_registryvalue).provider(:so_registryvalue) do
         resource.provider
     end
 
-    let(:cachedir) do
+    let(:vardir) do
       'C:\ProgramData\PuppetLabs\Puppet\cache'
     end
 
     let(:out_file) do
-        File.join(cachedir, '/rvsecurityoptionsoutput.txt').gsub('/', '\\')
+        File.join(vardir, '/rvsecurityoptionsoutput.txt').gsub('/', '\\')
     end
     let(:tmp_sdb_file) do
-        File.join(cachedir, '/secedit.sdb').gsub('/', '\\')
+        File.join(vardir, '/secedit.sdb').gsub('/', '\\')
     end
 
     def stub_secedit_export
         ini_stub = Puppet::Util::IniFile.new(File.join(
             File.dirname(__FILE__), "../../../../fixtures/unit/puppet/provider/so_registryvalue/so_registryvalue/rvsecurityoptionsoutput.txt"), '=')
-        expect(Puppet).to receive(:[]).at_least(:once).with(:cachedir).and_return(cachedir)
+        expect(Puppet).to receive(:[]).at_least(:once).with(:vardir).and_return(vardir)
         expect(File).to receive(:open).at_least(:once).with(out_file, 'w')
         expect(provider.class).to receive(:secedit).at_least(:once).with('/export', '/cfg', out_file, '/areas', 'securitypolicy')
         expect(Puppet::Util::IniFile).to receive(:new).at_least(:once).with(out_file, '=')
@@ -122,7 +122,7 @@ describe Puppet::Type.type(:so_registryvalue).provider(:so_registryvalue) do
           expect(example7a).to eq({
             :name   => 'System settings: Optional subsystems',
             :ensure => :present,
-            :regvalue => [],
+            :regvalue => '',
           })
         end
 
@@ -133,7 +133,7 @@ describe Puppet::Type.type(:so_registryvalue).provider(:so_registryvalue) do
           expect(example7b).to eq({
             :name   => 'Interactive logon: Message text for users attempting to log on',
             :ensure => :present,
-            :regvalue => ["By logging in I understand that the information on this computer and network system is Company property protected by law and that it may be accessed and used only by authorized personel and that my use may be monitored."],
+            :regvalue => 'By logging in I understand that the information on this computer and network system is Company property protected by law and that it may be accessed and used only by authorized personel and that my use may be monitored.',
           })
         end
 
@@ -144,21 +144,21 @@ describe Puppet::Type.type(:so_registryvalue).provider(:so_registryvalue) do
           expect(example7c).to eq({
             :name   => 'Network access: Remotely accessible registry paths and sub-paths',
             :ensure => :present,
-            :regvalue => ["System\\CurrentControlSet\\Control\\Print\\Printers", "System\\CurrentControlSet\\Services\\Eventlog", "Software\\Microsoft\\OLAP Server", "Software\\Microsoft\\Windows NT\\CurrentVersion\\Print", "Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows", "System\\CurrentControlSet\\Control\\ContentIndex", "System\\CurrentControlSet\\Control\\Terminal Server", "System\\CurrentControlSet\\Control\\Terminal Server\\UserConfig", "System\\CurrentControlSet\\Control\\Terminal Server\\DefaultUserConfiguration", "Software\\Microsoft\\Windows NT\\CurrentVersion\\Perflib", "System\\CurrentControlSet\\Services\\SysmonLog"],
+            :regvalue => 'System\\CurrentControlSet\\Control\\Print\\Printers,System\\CurrentControlSet\\Services\\Eventlog,Software\\Microsoft\\OLAP Server,Software\\Microsoft\\Windows NT\\CurrentVersion\\Print,Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows,System\\CurrentControlSet\\Control\\ContentIndex,System\\CurrentControlSet\\Control\\Terminal Server,System\\CurrentControlSet\\Control\\Terminal Server\\UserConfig,System\\CurrentControlSet\\Control\\Terminal Server\\DefaultUserConfiguration,Software\\Microsoft\\Windows NT\\CurrentVersion\\Perflib,System\\CurrentControlSet\\Services\\SysmonLog',
           })
 
         end
     end
 
     def stub_write_export(value)
-        expect(Puppet).to receive(:[]).at_least(:once).with(:cachedir).and_return(cachedir)
-        expect(Dir).to receive(:mkdir).at_least(:once).with(File.join(cachedir, 'rvimports'))
+        expect(Puppet).to receive(:[]).at_least(:once).with(:vardir).and_return(vardir)
+        expect(Dir).to receive(:mkdir).at_least(:once).with(File.join(vardir, 'rvimports'))
         writeFile = StringIO.new
         expect(File).to receive(:open).at_least(:once).with("C:\\ProgramData\\PuppetLabs\\Puppet\\cache\\rvimports\\AuditAudittheuseofBackupandRestoreprivilege.txt", 'w').and_yield(writeFile)
         expect(writeFile).to receive(:write).with("[Unicode]
 Unicode=yes
 [Registry Values]
-Audit: Audit the use of Backup and Restore privilege = #{value}
+MACHINE\\System\\CurrentControlSet\\Control\\Lsa\\FullPrivilegeAuditing = 3,#{value}
 [Version]
 signature=\"$CHICAGO$\"
 Revision=1
