@@ -47,9 +47,10 @@ Puppet::Type.newtype(:so_registryvalue) do
         elsif res_mapping['reg_type'] == '1' then
           value = value.to_s 
           return "\"" + value.tr('"', '') + "\""
-        elsif res_mapping['reg_type'] == '7' then 
-          return [] if value.nil?
-          Array(value)
+        elsif res_mapping['reg_type'] == '7' then
+          return '' if value.nil?
+          value = value.to_s
+          return value 
         end
       end
     end
