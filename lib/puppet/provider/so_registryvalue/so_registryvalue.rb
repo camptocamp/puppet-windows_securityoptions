@@ -110,13 +110,6 @@ Revision=1
           value = value || ''
         elsif res_mapping['reg_type'] == '4' then
         end
-        Puppet.debug "this is my name"
-        Puppet.debug res_displayname 
-        Puppet.debug "this is my value"
-        Puppet.debug value
-        Puppet.debug "this is my type"
-        Puppet.debug value.Class
-
 
         new({
           :name      => res_displayname,
