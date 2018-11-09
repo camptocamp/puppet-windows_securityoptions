@@ -1,12 +1,13 @@
 require 'puppet/util/windows'
 require 'pathname'
 
-
 begin
   require File.expand_path('../../../util/ini_file', __FILE__)
 rescue LoadError
+  #require File.expand_path('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file', __FILE__) if File.file?('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file')
+
   # in case we're not in libdir
-  #require File.expand_path('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file', __FILE__)
+  require File.expand_path('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file', __FILE__)
 end
 
 Puppet::Type.type(:so_systemaccess).provide(:so_systemaccess) do
@@ -40,23 +41,17 @@ Puppet::Type.type(:so_systemaccess).provide(:so_systemaccess) do
     end
 
     def in_file_path(securityoption)
-        fixup_name = securityoption.scan(/[\da-z]/i).join
-        File.join(Puppet[:vardir], 'secedit_export', "#{fixup_name}.txt").gsub('/', '\\')
+        securityoption = securityoption.scan(/[\da-z]/i).join
+        File.join(Puppet[:vardir], 'rvimports', "#{securityoption}.txt").gsub('/', '\\')
     end
 
     def write_export(securityoption, value)
-        Puppet.debug "what is securityoption" 
-        Puppet.debug securityoption
-        Puppet.debug "what is securityoption" 
+        res_mapping = PuppetX::Securityoptions::Mappingtables.new.get_mapping(securityoption, 'SystemAccess')
 
-        res_mapping = PuppetX::Securityoptions::Mappingtables.new.get_mapping(securityoption,'SystemAccess')
-        Puppet.debug "what is res mapping" 
-        Puppet.debug res_mapping
-        Puppet.debug "what is res mapping"
-        dir = File.join(Puppet[:vardir], 'secedit_export')
+        dir = File.join(Puppet[:vardir], 'rvimports')
         Dir.mkdir(dir) unless Dir.exist?(dir)
 
-        File.open(  in_file_path(securityoption)  , 'w') do |f|
+        File.open(in_file_path(securityoption), 'w') do |f|
           f.write <<-EOF
 [Unicode]
 Unicode=yes
@@ -70,7 +65,8 @@ Revision=1
     end
 
     def flush
-        secedit('/configure', '/db', 'secedit.sdb', '/cfg', in_file_path(@resource[:name])  )
+        tmp_sdb_file = File.join(Puppet[:vardir], 'secedit.sdb').gsub('/', '\\')
+        secedit('/configure', '/db', tmp_sdb_file, '/cfg', in_file_path(@resource[:name]))
     end
 
 
@@ -93,39 +89,33 @@ Revision=1
     end
 
     def self.instances
-        settings = []
-        inst1 = []
-        systemaccess_hash=[]
-        out_file_path = File.join(Puppet[:vardir], 'so_systemaccess.txt').gsub('/', '\\')
+        out_file_path = File.join(Puppet[:vardir], 'rvsecurityoptionsoutput.txt').gsub('/', '\\')
+        Puppet.debug out_file_path
         # Once the file exists in UTF-8, secedit will also use UTF-8
         File.open(out_file_path, 'w') { |f| f.write('# We want UTF-8') }
         secedit('/export', '/cfg', out_file_path, '/areas', 'securitypolicy')
-        #inst1=getregistryvalues(out_file_path)
-        #puts inst1.class
-        #inst2=getsystemaccess(out_file_path)
-        #puts inst2.class
-        #puts inst2
-        return getsystemaccess(out_file_path)
+        return getregistryvalues(out_file_path) 
     end
 
-   def self.getsystemaccess(out_file_path)
-        ini = Puppet::Util::IniFile.new(out_file_path, '=')
-        ini.get_settings('System Access').map { |k, v|
-            Puppet.debug k
-            Puppet.debug v
-            res_displayname= PuppetX::Securityoptions::Mappingtables.new.get_displayname(k,'SystemAccess')
-            res_mapping = PuppetX::Securityoptions::Mappingtables.new.get_mapping(res_displayname,'SystemAccess')
-            Puppet.debug res_displayname
-            if res_mapping['data_type'] == 'integer'
-              v = v.to_i
-            end
-            
-            new({
-                :name      => res_displayname,
-                :ensure    => :present,
-                :sovalue   => v,
-            })
-        }
+   def self.getregistryvalues(out_file_path)
+      ini = Puppet::Util::IniFile.new(out_file_path, '=')
+      ini.get_settings('System Access').map { |k, v|
+        res_displayname = PuppetX::Securityoptions::Mappingtables.new.get_displayname(k, 'SystemAccess')
+        res_mapping     = PuppetX::Securityoptions::Mappingtables.new.get_mapping(res_displayname, 'SystemAccess')
+
+       # value = (v.split(',')[1..-1]).join(',')
+        if res_mapping['data_type'] == "integer" then
+          value = v.to_i
+        elsif res_mapping['data_type'] == "qstring" then
+          value = v
+        end
+
+        new({
+          :name      => res_displayname,
+          :ensure    => :present,
+          :sovalue   => value,
+        })
+      }
 
    end
 
