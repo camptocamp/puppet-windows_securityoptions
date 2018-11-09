@@ -30,16 +30,12 @@ Puppet::Type.newtype(:so_systemaccess) do
       #end
       validate do |value|
         mapping = PuppetX::Securityoptions::Mappingtables.new
-        #Puppet.debug "resource name"
-        #Puppet.debug resource[:name]
-        #Puppet.debug "resource name"
         res_mapping      = mapping.get_mapping(resource[:name], 'SystemAccess')
-        #Puppet.debug "data_type"
-        #Puppet.debug res_mapping['data_type']
+   
         if res_mapping['data_type'] == 'integer' then
-          raise ArgumentError, "Invalid value: \'#{value}\'.  This must be a number" unless  value.to_i
+          raise ArgumentError, "Invalid value: \'#{value}\'.  This must be a number" unless (Integer(value) rescue false)
         elsif res_mapping['data_type'] == 'qstring' then
-          raise ArgumentError, "Invalid value: \'#{value}\'.  This must be a quoted string" unless value.is_a?(String)
+          raise ArgumentError, "Invalid value: \'#{value}\'.  This must be a quoted string" unless value.to_s
         elsif res_mapping['data_type'] != 'integer' and res_mapping['data_type'] != 'qstring' 
           raise ArgumentError, "Invalid DataType: \'#{value}\' in Mappingtables" 
         end
@@ -51,9 +47,11 @@ Puppet::Type.newtype(:so_systemaccess) do
         #res_mapping      = PuppetX::Securityoptions::Mappingtables.get_mapping(res_display_name, 'SystemAccess')
         res_mapping      = mapping.get_mapping(resource[:name], 'SystemAccess')
         if res_mapping['data_type'] == 'integer' then
-          value.to_i
+          return value.to_i
         elsif res_mapping['data_type'] == 'qstring' then
+          value = value.to_s 
           value = "\"" + value.tr('"', '') + "\""
+          return value
         end
       end
 
