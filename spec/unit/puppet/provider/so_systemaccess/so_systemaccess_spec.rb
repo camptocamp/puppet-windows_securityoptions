@@ -31,7 +31,7 @@ describe Puppet::Type.type(:so_systemaccess).provider(:so_systemaccess) do
     end
 
     let(:out_file) do
-        File.join(vardir, '/sosecurityoptionsoutput.txt').gsub('/', '\\')
+        File.join(vardir, '/sasecurityoptionsoutput.txt').gsub('/', '\\')
     end
     let(:tmp_sdb_file) do
         File.join(vardir, '/secedit.sdb').gsub('/', '\\')

@@ -6,7 +6,7 @@ begin
 rescue LoadError
 
   # in case we're not in libdir
-  require File.expand_path('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file', __FILE__)
+  require File.expand_path('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file', __FILE__) if File.file?('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file')
 end
 
 Puppet::Type.type(:so_registryvalue).provide(:so_registryvalue) do

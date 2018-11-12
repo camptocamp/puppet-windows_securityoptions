@@ -6,7 +6,7 @@ begin
 rescue LoadError
 
   # in case we're not in libdir
-  require File.expand_path('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file', __FILE__)
+  require File.expand_path('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file', __FILE__) if File.file?('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file')
 end
 
 Puppet::Type.type(:so_systemaccess).provide(:so_systemaccess) do
@@ -79,7 +79,7 @@ Revision=1
     end
 
     def self.instances
-        out_file_path = File.join(Puppet[:vardir], 'sosecurityoptionsoutput.txt').gsub('/', '\\')
+        out_file_path = File.join(Puppet[:vardir], 'sasecurityoptionsoutput.txt').gsub('/', '\\')
         Puppet.debug out_file_path
         # Once the file exists in UTF-8, secedit will also use UTF-8
         File.open(out_file_path, 'w') { |f| f.write('# We want UTF-8') }
