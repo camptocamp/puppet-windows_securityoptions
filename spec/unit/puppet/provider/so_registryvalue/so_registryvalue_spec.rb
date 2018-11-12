@@ -7,7 +7,7 @@ describe Puppet::Type.type(:so_registryvalue).provider(:so_registryvalue) do
         {
             :title    => 'Audit: Audit the use of Backup and Restore privilege',
             :ensure   => 'present',
-            :regvalue => 0,
+            :sovalue => 0,
             :provider => :so_registryvalue,
         }
     end
@@ -39,7 +39,7 @@ describe Puppet::Type.type(:so_registryvalue).provider(:so_registryvalue) do
 
     def stub_secedit_export
         ini_stub = Puppet::Util::IniFile.new(File.join(
-            File.dirname(__FILE__), "../../../../fixtures/unit/puppet/provider/so_registryvalue/so_registryvalue/rvsecurityoptionsoutput.txt"), '=')
+            File.dirname(__FILE__), "../../../../../lib/puppet_x/securityoptions/securityoptionsoutput.txt"), '=')
         expect(Puppet).to receive(:[]).at_least(:once).with(:vardir).and_return(vardir)
         expect(File).to receive(:open).at_least(:once).with(out_file, 'w')
         expect(provider.class).to receive(:secedit).at_least(:once).with('/export', '/cfg', out_file, '/areas', 'securitypolicy')
@@ -48,7 +48,7 @@ describe Puppet::Type.type(:so_registryvalue).provider(:so_registryvalue) do
     end
 
     context "when checking standard methods" do
-      [:exists?, :create, :destroy, :regvalue, :regvalue=].each { |method|
+      [:exists?, :create, :destroy, :sovalue, :sovalue=].each { |method|
         it { is_expected.to respond_to(method) }
       }
     end
@@ -56,14 +56,14 @@ describe Puppet::Type.type(:so_registryvalue).provider(:so_registryvalue) do
     context "when using prefetch" do
         it 'should not exist before prefetch' do
             expect(resource.provider.exists?).to eq(false)
-            expect(resource.provider.regvalue).to eq(nil)
+            expect(resource.provider.sovalue).to eq(nil)
         end
 
         it 'should exist after prefetch' do
             stub_secedit_export
             provider.class.prefetch(hashresource)
             expect(resource.provider.exists?).to eq(true)
-            expect(resource.provider.regvalue).to eq(42)
+            expect(resource.provider.sovalue).to eq(42)
         end
     end
 
@@ -74,7 +74,7 @@ describe Puppet::Type.type(:so_registryvalue).provider(:so_registryvalue) do
           @instances = provider.class.instances.map do |i| {
             :name     => i.get(:name),
             :ensure   => i.get(:ensure),
-            :regvalue => i.get(:regvalue),
+            :sovalue => i.get(:sovalue),
             }
           end
         end
@@ -90,7 +90,7 @@ describe Puppet::Type.type(:so_registryvalue).provider(:so_registryvalue) do
           expect(example1).to eq({
             :name   => 'Interactive logon: Smart card removal behavior',
             :ensure => :present,
-            :regvalue => "\"1\"",
+            :sovalue => "\"1\"",
           })
         end
 
@@ -101,7 +101,7 @@ describe Puppet::Type.type(:so_registryvalue).provider(:so_registryvalue) do
           expect(example3).to eq({
             :name   => 'Audit: Audit the use of Backup and Restore privilege',
             :ensure => :present,
-            :regvalue => 42,
+            :sovalue => 42,
           })
 
         end
@@ -113,7 +113,7 @@ describe Puppet::Type.type(:so_registryvalue).provider(:so_registryvalue) do
           expect(example4).to eq({
             :name   => 'Recovery console: Allow automatic administrative logon',
             :ensure => :present,
-            :regvalue => 0,
+            :sovalue => 0,
           })
         end
 
@@ -122,7 +122,7 @@ describe Puppet::Type.type(:so_registryvalue).provider(:so_registryvalue) do
           expect(example7a).to eq({
             :name   => 'System settings: Optional subsystems',
             :ensure => :present,
-            :regvalue => '',
+            :sovalue => '',
           })
         end
 
@@ -133,7 +133,7 @@ describe Puppet::Type.type(:so_registryvalue).provider(:so_registryvalue) do
           expect(example7b).to eq({
             :name   => 'Interactive logon: Message text for users attempting to log on',
             :ensure => :present,
-            :regvalue => 'By logging in I understand that the information on this computer and network system is Company property protected by law and that it may be accessed and used only by authorized personel and that my use may be monitored.',
+            :sovalue => 'By logging in I understand that the information on this computer and network system is Company property protected by law and that it may be accessed and used only by authorized personel and that my use may be monitored.',
           })
         end
 
@@ -144,7 +144,7 @@ describe Puppet::Type.type(:so_registryvalue).provider(:so_registryvalue) do
           expect(example7c).to eq({
             :name   => 'Network access: Remotely accessible registry paths and sub-paths',
             :ensure => :present,
-            :regvalue => 'System\\CurrentControlSet\\Control\\Print\\Printers,System\\CurrentControlSet\\Services\\Eventlog,Software\\Microsoft\\OLAP Server,Software\\Microsoft\\Windows NT\\CurrentVersion\\Print,Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows,System\\CurrentControlSet\\Control\\ContentIndex,System\\CurrentControlSet\\Control\\Terminal Server,System\\CurrentControlSet\\Control\\Terminal Server\\UserConfig,System\\CurrentControlSet\\Control\\Terminal Server\\DefaultUserConfiguration,Software\\Microsoft\\Windows NT\\CurrentVersion\\Perflib,System\\CurrentControlSet\\Services\\SysmonLog',
+            :sovalue => 'System\\CurrentControlSet\\Control\\Print\\Printers,System\\CurrentControlSet\\Services\\Eventlog,Software\\Microsoft\\OLAP Server,Software\\Microsoft\\Windows NT\\CurrentVersion\\Print,Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows,System\\CurrentControlSet\\Control\\ContentIndex,System\\CurrentControlSet\\Control\\Terminal Server,System\\CurrentControlSet\\Control\\Terminal Server\\UserConfig,System\\CurrentControlSet\\Control\\Terminal Server\\DefaultUserConfiguration,Software\\Microsoft\\Windows NT\\CurrentVersion\\Perflib,System\\CurrentControlSet\\Services\\SysmonLog',
           })
 
         end
@@ -152,9 +152,9 @@ describe Puppet::Type.type(:so_registryvalue).provider(:so_registryvalue) do
 
     def stub_write_export(value)
         expect(Puppet).to receive(:[]).at_least(:once).with(:vardir).and_return(vardir)
-        expect(Dir).to receive(:mkdir).at_least(:once).with(File.join(vardir, 'rvimports'))
+        expect(Dir).to receive(:mkdir).at_least(:once).with(File.join(vardir, 'soimports'))
         writeFile = StringIO.new
-        expect(File).to receive(:open).at_least(:once).with("C:\\ProgramData\\PuppetLabs\\Puppet\\cache\\rvimports\\AuditAudittheuseofBackupandRestoreprivilege.txt", 'w').and_yield(writeFile)
+        expect(File).to receive(:open).at_least(:once).with("C:\\ProgramData\\PuppetLabs\\Puppet\\cache\\soimports\\AuditAudittheuseofBackupandRestoreprivilege.txt", 'w').and_yield(writeFile)
         expect(writeFile).to receive(:write).with("[Unicode]
 Unicode=yes
 [Registry Values]
@@ -172,10 +172,10 @@ Revision=1
     context 'when updating value' do
         it 'should update value' do
             stub_write_export(3)
-            expect(provider.regvalue).to eq(nil)
-            provider.regvalue=3
-            expect(provider.regvalue).to eq(3)
-            stub_flush("C:\\ProgramData\\PuppetLabs\\Puppet\\cache\\rvimports\\AuditAudittheuseofBackupandRestoreprivilege.txt")
+            expect(provider.sovalue).to eq(nil)
+            provider.sovalue=3
+            expect(provider.sovalue).to eq(3)
+            stub_flush("C:\\ProgramData\\PuppetLabs\\Puppet\\cache\\soimports\\AuditAudittheuseofBackupandRestoreprivilege.txt")
             provider.flush
         end
     end

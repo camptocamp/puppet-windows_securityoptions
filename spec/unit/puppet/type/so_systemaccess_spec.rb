@@ -87,6 +87,12 @@ describe Puppet::Type.type(:so_systemaccess) do
         resourceint[:sovalue] = "0whatisit1"
       }.to raise_error(Puppet::ResourceError, /Invalid value: \'0whatisit1\'.  This must be a number/)
     end
+   # it 'if type integer should fail when passed a quoted string which cannot be converted to an integer' do
+   #   expect {
+   #     resourceint[:sovalue] = '"0"'
+   #   }.to raise_error(Puppet::ResourceError, /Invalid value: \'"0"\'. This must be a number/)
+   # end
+
   end
 
 end

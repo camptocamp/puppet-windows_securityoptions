@@ -31,7 +31,7 @@ describe Puppet::Type.type(:so_systemaccess).provider(:so_systemaccess) do
     end
 
     let(:out_file) do
-        File.join(vardir, '/rvsecurityoptionsoutput.txt').gsub('/', '\\')
+        File.join(vardir, '/sosecurityoptionsoutput.txt').gsub('/', '\\')
     end
     let(:tmp_sdb_file) do
         File.join(vardir, '/secedit.sdb').gsub('/', '\\')
@@ -39,7 +39,7 @@ describe Puppet::Type.type(:so_systemaccess).provider(:so_systemaccess) do
 
     def stub_secedit_export
         ini_stub = Puppet::Util::IniFile.new(File.join(
-            File.dirname(__FILE__), "../../../../fixtures/unit/puppet/provider/so_systemaccess/so_systemaccess/rvsecurityoptionsoutput.txt"), '=')
+            File.dirname(__FILE__), "../../../../../lib/puppet_x/securityoptions/securityoptionsoutput.txt"), '=')
         expect(Puppet).to receive(:[]).at_least(:once).with(:vardir).and_return(vardir)
         expect(File).to receive(:open).at_least(:once).with(out_file, 'w')
         expect(provider.class).to receive(:secedit).at_least(:once).with('/export', '/cfg', out_file, '/areas', 'securitypolicy')
@@ -110,9 +110,9 @@ describe Puppet::Type.type(:so_systemaccess).provider(:so_systemaccess) do
 
     def stub_write_export(value)
         expect(Puppet).to receive(:[]).at_least(:once).with(:vardir).and_return(vardir)
-        expect(Dir).to receive(:mkdir).at_least(:once).with(File.join(vardir, 'rvimports'))
+        expect(Dir).to receive(:mkdir).at_least(:once).with(File.join(vardir, 'soimports'))
         writeFile = StringIO.new
-        expect(File).to receive(:open).at_least(:once).with("C:\\ProgramData\\PuppetLabs\\Puppet\\cache\\rvimports\\Enforcepasswordhistory.txt", 'w').and_yield(writeFile)
+        expect(File).to receive(:open).at_least(:once).with("C:\\ProgramData\\PuppetLabs\\Puppet\\cache\\soimports\\Enforcepasswordhistory.txt", 'w').and_yield(writeFile)
         expect(writeFile).to receive(:write).with("[Unicode]
 Unicode=yes
 [System Access]
@@ -133,7 +133,7 @@ Revision=1
             expect(provider.sovalue).to eq(nil)
             provider.sovalue=12
             expect(provider.sovalue).to eq(12)
-            stub_flush("C:\\ProgramData\\PuppetLabs\\Puppet\\cache\\rvimports\\Enforcepasswordhistory.txt")
+            stub_flush("C:\\ProgramData\\PuppetLabs\\Puppet\\cache\\soimports\\Enforcepasswordhistory.txt")
             provider.flush
         end
     end

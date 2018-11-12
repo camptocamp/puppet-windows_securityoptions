@@ -4,7 +4,6 @@ require 'pathname'
 begin
   require File.expand_path('../../../util/ini_file', __FILE__)
 rescue LoadError
-  #require File.expand_path('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file', __FILE__) if File.file?('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file')
 
   # in case we're not in libdir
   require File.expand_path('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file', __FILE__)
@@ -22,7 +21,7 @@ Puppet::Type.type(:so_registryvalue).provide(:so_registryvalue) do
     end
 
     def create
-        write_export(@resource[:name], @resource[:regvalue])
+        write_export(@resource[:name], @resource[:sovalue])
         @property_hash[:ensure] = :present
     end
 
@@ -31,24 +30,24 @@ Puppet::Type.type(:so_registryvalue).provide(:so_registryvalue) do
         @property_hash[:ensure] = :absent
     end
 
-    def regvalue 
-        @property_hash[:regvalue]
+    def sovalue 
+        @property_hash[:sovalue]
     end
 
-    def regvalue=(value)
+    def sovalue=(value)
         write_export(@resource[:name], value)
-        @property_hash[:regvalue] = value
+        @property_hash[:sovalue] = value
     end
 
     def in_file_path(securityoption)
         securityoption = securityoption.scan(/[\da-z]/i).join
-        File.join(Puppet[:vardir], 'rvimports', "#{securityoption}.txt").gsub('/', '\\')
+        File.join(Puppet[:vardir], 'soimports', "#{securityoption}.txt").gsub('/', '\\')
     end
 
     def write_export(securityoption, value)
         res_mapping = PuppetX::Securityoptions::Mappingtables.new.get_mapping(securityoption, 'RegistryValues')
 
-        dir = File.join(Puppet[:vardir], 'rvimports')
+        dir = File.join(Puppet[:vardir], 'soimports')
         Dir.mkdir(dir) unless Dir.exist?(dir)
 
         File.open(in_file_path(securityoption), 'w') do |f|
@@ -68,15 +67,6 @@ Revision=1
         tmp_sdb_file = File.join(Puppet[:vardir], 'secedit.sdb').gsub('/', '\\')
         secedit('/configure', '/db', tmp_sdb_file, '/cfg', in_file_path(@resource[:name]))
     end
-
-
-    #def sid_in_sync?(current, should)
-    #    return false unless current
-    #    current_sids = current
-    #    specified_sids = name_to_sid(should)
-    #    Puppet.debug specified_sids.to_json
-    #    (specified_sids & current_sids) == (specified_sids | current_sids)
-    #end
 
     def self.prefetch(resources)
         instances.each do |right|
@@ -114,7 +104,7 @@ Revision=1
         new({
           :name      => res_displayname,
           :ensure    => :present,
-          :regvalue   => value,
+          :sovalue   => value,
         })
       }
 

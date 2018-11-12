@@ -20,8 +20,8 @@ Puppet::Type.newtype(:so_registryvalue) do
 #
     end
 #
-    newproperty(:regvalue) do
-      desc "hello" 
+    newproperty(:sovalue) do
+      desc "the value of the registry setting" 
 
       validate do |value|
 

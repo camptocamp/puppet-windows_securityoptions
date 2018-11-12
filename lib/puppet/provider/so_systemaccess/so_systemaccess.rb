@@ -4,7 +4,6 @@ require 'pathname'
 begin
   require File.expand_path('../../../util/ini_file', __FILE__)
 rescue LoadError
-  #require File.expand_path('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file', __FILE__) if File.file?('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file')
 
   # in case we're not in libdir
   require File.expand_path('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file', __FILE__)
@@ -42,13 +41,13 @@ Puppet::Type.type(:so_systemaccess).provide(:so_systemaccess) do
 
     def in_file_path(securityoption)
         securityoption = securityoption.scan(/[\da-z]/i).join
-        File.join(Puppet[:vardir], 'rvimports', "#{securityoption}.txt").gsub('/', '\\')
+        File.join(Puppet[:vardir], 'soimports', "#{securityoption}.txt").gsub('/', '\\')
     end
 
     def write_export(securityoption, value)
         res_mapping = PuppetX::Securityoptions::Mappingtables.new.get_mapping(securityoption, 'SystemAccess')
 
-        dir = File.join(Puppet[:vardir], 'rvimports')
+        dir = File.join(Puppet[:vardir], 'soimports')
         Dir.mkdir(dir) unless Dir.exist?(dir)
 
         File.open(in_file_path(securityoption), 'w') do |f|
@@ -69,15 +68,6 @@ Revision=1
         secedit('/configure', '/db', tmp_sdb_file, '/cfg', in_file_path(@resource[:name]))
     end
 
-
-    #def sid_in_sync?(current, should)
-    #    return false unless current
-    #    current_sids = current
-    #    specified_sids = name_to_sid(should)
-    #    Puppet.debug specified_sids.to_json
-    #    (specified_sids & current_sids) == (specified_sids | current_sids)
-    #end
-
     def self.prefetch(resources)
         instances.each do |right|
             resources.select { |title, res|
@@ -89,7 +79,7 @@ Revision=1
     end
 
     def self.instances
-        out_file_path = File.join(Puppet[:vardir], 'rvsecurityoptionsoutput.txt').gsub('/', '\\')
+        out_file_path = File.join(Puppet[:vardir], 'sosecurityoptionsoutput.txt').gsub('/', '\\')
         Puppet.debug out_file_path
         # Once the file exists in UTF-8, secedit will also use UTF-8
         File.open(out_file_path, 'w') { |f| f.write('# We want UTF-8') }
@@ -103,7 +93,6 @@ Revision=1
         res_displayname = PuppetX::Securityoptions::Mappingtables.new.get_displayname(k, 'SystemAccess')
         res_mapping     = PuppetX::Securityoptions::Mappingtables.new.get_mapping(res_displayname, 'SystemAccess')
 
-       # value = (v.split(',')[1..-1]).join(',')
         if res_mapping['data_type'] == "integer" then
           value = v.to_i
         elsif res_mapping['data_type'] == "qstring" then
