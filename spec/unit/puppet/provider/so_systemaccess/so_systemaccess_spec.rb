@@ -1,5 +1,16 @@
 require 'spec_helper'
 require 'stringio'
+require 'puppet/util'
+require 'pathname'
+
+begin
+  require File.expand_path('../../../util/ini_file', __FILE__)
+rescue LoadError
+
+  # in case we're not in libdir
+  require File.expand_path('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file', __FILE__) if File.file?('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file')
+end
+
 
 describe Puppet::Type.type(:so_systemaccess).provider(:so_systemaccess) do
 
@@ -38,13 +49,11 @@ describe Puppet::Type.type(:so_systemaccess).provider(:so_systemaccess) do
     end
 
     def stub_secedit_export
-        ini_stub = Puppet::Util::IniFile.new(File.join(
-            File.dirname(__FILE__), "../../../../../lib/puppet_x/securityoptions/securityoptionsoutput.txt"), '=')
+        ini_stub = Puppet::Util::IniFile.new(File.join(File.dirname(__FILE__), "../../../../../lib/puppet_x/securityoptions/securityoptionsoutput.txt"), '=')
         expect(Puppet).to receive(:[]).at_least(:once).with(:vardir).and_return(vardir)
         expect(File).to receive(:open).at_least(:once).with(out_file, 'w')
         expect(provider.class).to receive(:secedit).at_least(:once).with('/export', '/cfg', out_file, '/areas', 'securitypolicy')
-        expect(Puppet::Util::IniFile).to receive(:new).at_least(:once).with(out_file, '=')
-            .and_return(ini_stub)
+        expect(Puppet::Util::IniFile).to receive(:new).at_least(:once).with(out_file, '=').and_return(ini_stub)
     end
 
     context "when checking standard methods" do

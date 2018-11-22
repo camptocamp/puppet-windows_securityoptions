@@ -1,5 +1,9 @@
 require 'spec_helper'
 require 'stringio'
+require 'puppet/util'
+require 'pathname'
+
+require File.expand_path('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file', __FILE__) if File.file?('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file')
 
 describe Puppet::Type.type(:so_registryvalue).provider(:so_registryvalue) do
 
@@ -38,8 +42,7 @@ describe Puppet::Type.type(:so_registryvalue).provider(:so_registryvalue) do
     end
 
     def stub_secedit_export
-        ini_stub = Puppet::Util::IniFile.new(File.join(
-            File.dirname(__FILE__), "../../../../../lib/puppet_x/securityoptions/securityoptionsoutput.txt"), '=')
+        ini_stub = Puppet::Util::IniFile.new(File.join(File.dirname(__FILE__), "../../../../../lib/puppet_x/securityoptions/securityoptionsoutput.txt"), '=')
         expect(Puppet).to receive(:[]).at_least(:once).with(:vardir).and_return(vardir)
         expect(File).to receive(:open).at_least(:once).with(out_file, 'w')
         expect(provider.class).to receive(:secedit).at_least(:once).with('/export', '/cfg', out_file, '/areas', 'securitypolicy')
