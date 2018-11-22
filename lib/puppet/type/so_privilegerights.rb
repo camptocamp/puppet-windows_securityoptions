@@ -1,4 +1,7 @@
+require 'pathname'
+
 Puppet::Type.newtype(:so_privilegerights) do
+    require Pathname.new(__FILE__).dirname + '../../puppet_x/securityoptions/secedit_mapping'
     @doc = <<-'EOT'
     Manage a Windows User Rights Assignment.
     EOT
@@ -10,10 +13,10 @@ Puppet::Type.newtype(:so_privilegerights) do
     end
 
     newparam(:name, :namevar => true) do
-        desc 'The privilege right name'
+        desc 'The long name of the privilege right as it shows up in the local security policy'
 
         validate do |value|
-            fail "Not a valid name: '#{value}'" unless value =~ /^[A-Za-z]+$/
+            raise ArgumentError,  "Invalid display name: '#{value}'" unless PuppetX::Securityoptions::Mappingtables.new.valid_name?(value,'PrivilegeRights')
         end
 
         munge do |value|
@@ -27,7 +30,7 @@ Puppet::Type.newtype(:so_privilegerights) do
         def fragments
             # Collect fragments that target this resource by name or title.
             @fragments ||= resource.catalog.resources.map { |res|
-                next unless res.is_a?(Puppet::Type.type(:user_right_assignment))
+                next unless res.is_a?(Puppet::Type.type(:user_rights_assignment))
 
                 if res[:right] == @resource[:name] || res[:right] == @resource[:title]
                     res

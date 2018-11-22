@@ -6,7 +6,7 @@ begin
 rescue LoadError
 
   # in case we're not in libdir
-  require File.expand_path('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file', __FILE__) if File.file?('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file')
+  require File.expand_path('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file', __FILE__) #if File.file?('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file')
 end
 
 Puppet::Type.type(:so_systemaccess).provide(:so_systemaccess) do
@@ -98,6 +98,7 @@ Revision=1
         elsif res_mapping['data_type'] == "qstring" then
           value = v
         end
+
 
         new({
           :name      => res_displayname,
