@@ -6,43 +6,48 @@ Puppet::Type.type(:so_systemaccess).provide(:so_systemaccess, parent: Puppet::Pr
   require Pathname.new(__FILE__).dirname + '../../../puppet_x/securityoptions/secedit_mapping'
   defaultfor :osfamily => :windows
   confine :osfamily => :windows
+<<<<<<< HEAD
 
   commands :secedit => 'secedit.exe'
     attr_so_accessor(:sovalue)
+=======
+
+  commands :secedit => 'secedit.exe'
+
+  attr_so_accessor(:sovalue)
+>>>>>>> 34ddb99... realign code
 
 
-    def write_export_filename
-      'soimports'
-    end
+  def write_export_filename
+    'soimports'
+  end
 
-    def map_option(securityoption)
-      res_mapping = PuppetX::Securityoptions::Mappingtables.new.get_mapping(securityoption, 'SystemAccess')
-      res_mapping['name']
-    end
+  def map_option(securityoption)
+    res_mapping = PuppetX::Securityoptions::Mappingtables.new.get_mapping(securityoption, 'SystemAccess')
+    res_mapping['name']
+  end
 
-    def section_name
-      'System Access'
-    end
+  def section_name
+    'System Access'
+  end
 
-    def self.instances
+  def self.instances
       secedit_exports.get_settings('System Access').map { |k, v|
-        res_displayname = PuppetX::Securityoptions::Mappingtables.new.get_displayname(k, 'SystemAccess')
-        res_mapping     = PuppetX::Securityoptions::Mappingtables.new.get_mapping(res_displayname, 'SystemAccess')
+      res_displayname = PuppetX::Securityoptions::Mappingtables.new.get_displayname(k, 'SystemAccess')
+      res_mapping     = PuppetX::Securityoptions::Mappingtables.new.get_mapping(res_displayname, 'SystemAccess')
 
-        if res_mapping['data_type'] == "integer" then
-          value = v.to_i
-        elsif res_mapping['data_type'] == "qstring" then
-          value = v
-        end
+      if res_mapping['data_type'] == "integer" then
+        value = v.to_i
+      elsif res_mapping['data_type'] == "qstring" then
+        value = v
+      end
 
 
-        new({
-          :name      => res_displayname,
-          :ensure    => :present,
-          :sovalue   => value,
-        })
-      }
-
-   end
-
+      new({
+        :name      => res_displayname,
+        :ensure    => :present,
+        :sovalue   => value,
+      })
+    }
+  end
 end
