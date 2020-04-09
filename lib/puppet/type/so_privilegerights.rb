@@ -48,9 +48,10 @@ Puppet::Type.newtype(:so_privilegerights) do
             values.flatten.compact
         end
 
-        def insync?(current)
-            #provider.sid_in_sync?(current, @should)
-            provider.sid_in_sync?(current, should)
+        def insync?(current_sids)
+          return false unless current_sids
+          specified_sids = provider.name_to_sid(@should)
+          (specified_sids & current_sids) == specified_sids
         end
     end
 end
