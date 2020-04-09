@@ -25,15 +25,9 @@ Puppet::Type.type(:so_privilegerights).provide(:so_privilegerights, parent: Pupp
     end
 
     def name_to_sid(users)
-        users.map { |user| '*' + Puppet::Util::Windows::SID.name_to_sid(user) }
+      users.map { |user| '*' + Puppet::Util::Windows::SID.name_to_sid(user) }
     end
 
-    def sid_in_sync?(current, should)
-        return false unless current
-        current_sids = current
-        specified_sids = name_to_sid(should)
-        (specified_sids & current_sids) == specified_sids
-    end
 
     def self.prefetch(resources)
         instances.each do |right|
