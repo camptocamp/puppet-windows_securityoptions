@@ -28,6 +28,16 @@ class Puppet::Provider::Windows_SecurityOptions < Puppet::Provider
   end
 
 
+  def self.prefetch(resources)
+    instances.each do |right|
+      resources.select { |title, res|
+        res[:name].downcase == right.get(:name).downcase
+      }.map { |name, res|
+        res.provider = right
+      }
+    end
+  end
+
 
 
   def self.get_secedit_exports

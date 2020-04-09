@@ -26,16 +26,6 @@ Puppet::Type.type(:so_systemaccess).provide(:so_systemaccess, parent: Puppet::Pr
     end
 
 
-    def self.prefetch(resources)
-        instances.each do |right|
-            resources.select { |title, res|
-                res[:name].downcase == right.get(:name).downcase
-            }.map { |name, res|
-                res.provider = right
-            }
-        end
-    end
-
     def self.instances
       secedit_exports.get_settings('System Access').map { |k, v|
         res_displayname = PuppetX::Securityoptions::Mappingtables.new.get_displayname(k, 'SystemAccess')
