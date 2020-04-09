@@ -27,9 +27,6 @@ class Puppet::Provider::Windows_SecurityOptions < Puppet::Provider
     secedit('/configure', '/db', tmp_sdb_file, '/cfg', in_file_path)
   end
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-
   def self.prefetch(resources)
     instances.each do |right|
       resources.select { |title, res|
@@ -39,8 +36,6 @@ class Puppet::Provider::Windows_SecurityOptions < Puppet::Provider
       }
     end
   end
-
-
 
   def self.get_secedit_exports
     out_file_path = File.join(Puppet[:vardir], 'secedit_exports.txt').gsub('/', '\\')
@@ -56,11 +51,6 @@ class Puppet::Provider::Windows_SecurityOptions < Puppet::Provider
   end
 
 
-
-=======
->>>>>>> 04df365... [WIP] Refactor providers with a base Windows_SecurityOptions class
-=======
->>>>>>> 04df365... [WIP] Refactor providers with a base Windows_SecurityOptions class
   def self.attr_so_reader(name)
     define_method(name) do
       @property_hash[name.to_sym]
