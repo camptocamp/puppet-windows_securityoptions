@@ -28,6 +28,7 @@ class Puppet::Provider::Windows_SecurityOptions < Puppet::Provider
   end
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
   def self.prefetch(resources)
     instances.each do |right|
@@ -56,6 +57,8 @@ class Puppet::Provider::Windows_SecurityOptions < Puppet::Provider
 
 
 
+=======
+>>>>>>> 04df365... [WIP] Refactor providers with a base Windows_SecurityOptions class
 =======
 >>>>>>> 04df365... [WIP] Refactor providers with a base Windows_SecurityOptions class
   def self.attr_so_reader(name)

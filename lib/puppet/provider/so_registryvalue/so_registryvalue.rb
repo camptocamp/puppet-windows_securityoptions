@@ -11,7 +11,6 @@ Puppet::Type.type(:so_registryvalue).provide(:so_registryvalue, parent: Puppet::
 
     attr_so_accessor(:sovalue)
 
-
     def write_export_filename
       'soimports'
     end

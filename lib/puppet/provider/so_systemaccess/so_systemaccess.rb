@@ -3,6 +3,7 @@ require 'pathname'
 require File.join(File.dirname(__FILE__), '../../../puppet/provider/windows_securityoptions')
 
 Puppet::Type.type(:so_systemaccess).provide(:so_systemaccess, parent: Puppet::Provider::Windows_SecurityOptions) do
+<<<<<<< HEAD
   require Pathname.new(__FILE__).dirname + '../../../puppet_x/securityoptions/secedit_mapping'
   defaultfor :osfamily => :windows
   confine :osfamily => :windows
@@ -23,7 +24,6 @@ Puppet::Type.type(:so_systemaccess).provide(:so_systemaccess, parent: Puppet::Pr
     def section_name
       'System Access'
     end
-
 
     def self.prefetch(resources)
         instances.each do |right|
