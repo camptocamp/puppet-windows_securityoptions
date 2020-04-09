@@ -27,6 +27,7 @@ class Puppet::Provider::Windows_SecurityOptions < Puppet::Provider
     secedit('/configure', '/db', tmp_sdb_file, '/cfg', in_file_path)
   end
 
+<<<<<<< HEAD
 
   def self.prefetch(resources)
     instances.each do |right|
@@ -55,6 +56,8 @@ class Puppet::Provider::Windows_SecurityOptions < Puppet::Provider
 
 
 
+=======
+>>>>>>> 04df365... [WIP] Refactor providers with a base Windows_SecurityOptions class
   def self.attr_so_reader(name)
     define_method(name) do
       @property_hash[name.to_sym]

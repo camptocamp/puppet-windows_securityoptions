@@ -1,71 +1,26 @@
 require 'puppet/util/windows'
-begin
-  require File.expand_path('../../../util/ini_file', __FILE__)
-rescue LoadError
-  # in case we're not in libdir
-  require File.expand_path('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file', __FILE__) if File.file?('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file')
-end
-#jbegin
-#  require File.expand_path('../../../util/ini_file', __FILE__)
-#rescue LoadError
-  # in case we're not in libdir
-#  require File.expand_path('../../../../../spec/fixtures/modules/inifile/lib/puppet/util/ini_file', __FILE__)
-#end
 
-Puppet::Type.type(:so_privilegerights).provide(:so_privilegerights) do
-    defaultfor :osfamily => :windows
-    confine :osfamily => :windows
+require File.join(File.dirname(__FILE__), '../../../puppet/provider/windows_securityoptions')
 
-    commands :secedit => 'secedit.exe'
+Puppet::Type.type(:so_privilegerights).provide(:so_privilegerights, parent: Puppet::Provider::Windows_SecurityOptions) do
+  defaultfor :osfamily => :windows
+  confine :osfamily => :windows
 
-    def exists?
-        @property_hash[:ensure] == :present
+  commands :secedit => 'secedit.exe'
+
+    attr_so_accessor(:sid)
+
+
+    def write_export_filename
+      'secedit_export'
     end
 
-    def create
-        write_export(@resource[:name], @resource[:sid])
-        @property_hash[:ensure] = :present
+    def section_name
+      'Privilege Rights'
     end
 
-    def destroy
-        write_export(@resource[:name], [])
-        @property_hash[:ensure] = :absent
-    end
-
-    def sid
-        @property_hash[:sid]
-    end
-
-    def sid=(value)
-        write_export(@resource[:name], value)
-        @property_hash[:sid] = value
-    end
-
-    def in_file_path(right)
-        File.join(Puppet[:vardir], 'secedit_export', "#{right}.txt").gsub('/', '\\')
-    end
-
-    def write_export(right, value)
-        dir = File.join(Puppet[:vardir], 'secedit_export')
-        Dir.mkdir(dir) unless Dir.exist?(dir)
-
-        sid = name_to_sid(value)
-
-        File.open(in_file_path(right), 'w') do |f|
-          f.write <<-EOF
-[Unicode]
-Unicode=yes
-[Privilege Rights]
-#{right} = #{sid.join(',')}
-[Version]
-signature="$CHICAGO$"
-Revision=1
-          EOF
-        end
-    end
-
-    def flush
-        secedit('/configure', '/db', 'secedit.sdb', '/cfg', in_file_path(@resource[:name]))
+    def map_value(value)
+      name_to_sid(value)
     end
 
     def name_to_sid(users)
