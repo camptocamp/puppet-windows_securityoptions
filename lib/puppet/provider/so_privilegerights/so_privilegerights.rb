@@ -19,23 +19,14 @@ Puppet::Type.type(:so_privilegerights).provide(:so_privilegerights, parent: Pupp
       'Privilege Rights'
     end
 
-    def map_value(value)
-      name_to_sid(value)
-    end
-
     def name_to_sid(users)
       users.map { |user| '*' + Puppet::Util::Windows::SID.name_to_sid(user) }
     end
 
-    def self.prefetch(resources)
-      instances.each do |right|
-        resources.select { |title, res|
-          res[:name].downcase == right.get(:name).downcase
-        }.map { |name, res|
-          res.provider = right
-        }
-      end
+    def map_value(value)
+      name_to_sid(value)
     end
+
 
     def self.instances
       secedit_exports.get_settings('Privilege Rights').map { |k, v|
