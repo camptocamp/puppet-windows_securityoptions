@@ -27,6 +27,24 @@ class Puppet::Provider::Windows_SecurityOptions < Puppet::Provider
     secedit('/configure', '/db', tmp_sdb_file, '/cfg', in_file_path)
   end
 
+
+
+
+  def self.get_secedit_exports
+    out_file_path = File.join(Puppet[:vardir], 'secedit_exports.txt').gsub('/', '\\')
+    # Once the file exists in UTF-8, secedit will also use UTF-8
+    File.open(out_file_path, 'w') { |f| f.write('# We want UTF-8') }
+    secedit('/export', '/cfg', out_file_path)
+    Puppet::Util::IniFile.new(out_file_path, '=')
+  end
+
+  def self.secedit_exports
+    puts "in secedit_exports"
+    @exports ||= get_secedit_exports
+  end
+
+
+
   def self.attr_so_reader(name)
     define_method(name) do
       @property_hash[name.to_sym]

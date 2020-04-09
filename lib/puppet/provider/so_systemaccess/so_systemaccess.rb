@@ -37,17 +37,7 @@ Puppet::Type.type(:so_systemaccess).provide(:so_systemaccess, parent: Puppet::Pr
     end
 
     def self.instances
-        out_file_path = File.join(Puppet[:vardir], 'sasecurityoptionsoutput.txt').gsub('/', '\\')
-        Puppet.debug out_file_path
-        # Once the file exists in UTF-8, secedit will also use UTF-8
-        File.open(out_file_path, 'w') { |f| f.write('# We want UTF-8') }
-        secedit('/export', '/cfg', out_file_path, '/areas', 'securitypolicy')
-        return getregistryvalues(out_file_path)
-    end
-
-   def self.getregistryvalues(out_file_path)
-      ini = Puppet::Util::IniFile.new(out_file_path, '=')
-      ini.get_settings('System Access').map { |k, v|
+      secedit_exports.get_settings('System Access').map { |k, v|
         res_displayname = PuppetX::Securityoptions::Mappingtables.new.get_displayname(k, 'SystemAccess')
         res_mapping     = PuppetX::Securityoptions::Mappingtables.new.get_mapping(res_displayname, 'SystemAccess')
 
