@@ -41,19 +41,14 @@ describe Puppet::Type.type(:so_systemaccess).provider(:so_systemaccess) do
       'C:\ProgramData\PuppetLabs\Puppet\cache'
     end
 
-    let(:out_file) do
-        File.join(vardir, '/sasecurityoptionsoutput.txt').gsub('/', '\\')
-    end
     let(:tmp_sdb_file) do
         File.join(vardir, '/secedit.sdb').gsub('/', '\\')
     end
 
     def stub_secedit_export
         ini_stub = Puppet::Util::IniFile.new(File.join(File.dirname(__FILE__), "../../../../../lib/puppet_x/securityoptions/securityoptionsoutput.txt"), '=')
-        expect(Puppet).to receive(:[]).at_least(:once).with(:vardir).and_return(vardir)
-        expect(File).to receive(:open).at_least(:once).with(out_file, 'w')
-        expect(provider.class).to receive(:secedit).at_least(:once).with('/export', '/cfg', out_file, '/areas', 'securitypolicy')
-        expect(Puppet::Util::IniFile).to receive(:new).at_least(:once).with(out_file, '=').and_return(ini_stub)
+        expect(provider.class).to receive(:secedit_exports).at_least(:once)
+            .and_return(ini_stub)
     end
 
     context "when checking standard methods" do
