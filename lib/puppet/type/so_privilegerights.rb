@@ -1,5 +1,3 @@
-require 'pathname'
-
 Puppet::Type.newtype(:so_privilegerights) do
     require Pathname.new(__FILE__).dirname + '../../puppet_x/securityoptions/secedit_mapping'
     @doc = <<-'EOT'
@@ -16,7 +14,7 @@ Puppet::Type.newtype(:so_privilegerights) do
         desc 'The long name of the privilege right as it shows up in the local security policy'
 
         validate do |value|
-            raise ArgumentError,  "Invalid display name: '#{value}'" unless PuppetX::Securityoptions::Mappingtables.new.valid_name?(value,'PrivilegeRights')
+           raise ArgumentError,  "Invalid display name: '#{value}'" unless PuppetX::Securityoptions::Mappingtables.new.valid_name?(value,'PrivilegeRights')
         end
 
         munge do |value|
@@ -30,9 +28,11 @@ Puppet::Type.newtype(:so_privilegerights) do
         def fragments
             # Collect fragments that target this resource by name or title.
             @fragments ||= resource.catalog.resources.map { |res|
-                next unless res.is_a?(Puppet::Type.type(:user_rights_assignment))
-
-                if res[:right] == @resource[:name] || res[:right] == @resource[:title]
+                next unless (
+			res.is_a?(Puppet::Type.type(:so_privilegerights_fragment)) or
+			res.is_a?(Puppet::Type.type(:user_right_assignment)) 
+		)
+                if res[:right] == @resource[:name] 
                     res
                 end
             }.compact
@@ -45,13 +45,12 @@ Puppet::Type.newtype(:so_privilegerights) do
                 values << f[:sid]
             end
 
-            values.compact
+            values.flatten.compact
         end
 
-        def insync?(current_sids)
-          return false unless current_sids
-          specified_sids = provider.name_to_sid(@should)
-          (specified_sids & current_sids) == specified_sids
+        def insync?(current)
+            #provider.sid_in_sync?(current, @should)
+            provider.sid_in_sync?(current, should)
         end
     end
 end

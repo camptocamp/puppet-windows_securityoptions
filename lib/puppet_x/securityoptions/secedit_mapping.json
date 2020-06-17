@@ -218,6 +218,16 @@
       "reg_type": "4"
     },
     {
+      "displayname": "DCOM: Machine Access Restrictions in Security Descriptor Definition Language (SDDL) syntax",
+      "name": "MACHINE\\Software\\policies\\Microsoft\\Windows NT\\DCOM\\MachineAccessRestriction",
+      "reg_type": "1"
+    },
+    {
+      "displayname": "DCOM: Machine Launch Restrictions in Security Descriptor Definition Language (SDDL) syntax",
+      "name": "MACHINE\\Software\\policies\\Microsoft\\Windows NT\\DCOM\\MachineLaunchRestriction",
+      "reg_type": "1"
+    },
+    {
       "displayname": "Network access: Do not allow storage of passwords and credentials for network authentication",
       "name": "MACHINE\\System\\CurrentControlSet\\Control\\Lsa\\DisableDomainCreds",
       "reg_type": "4"
@@ -261,6 +271,31 @@
       "displayname": "Network security: Allow LocalSystem NULL session fallback",
       "name": "MACHINE\\System\\CurrentControlSet\\Control\\Lsa\\MSV1_0\\allownullsessionfallback",
       "reg_type": "4"
+    },
+    {
+      "displayname": "Network security: Restrict NTLM: Outgoing NTLM traffic to remote servers",
+      "name": "MACHINE\\System\\CurrentControlSet\\Control\\Lsa\\MSV1_0\\RestrictSendingNTLMTraffic",
+      "reg_type": "4"
+    },
+    {
+      "displayname": "Network security: Restrict NTLM: Incoming NTLM traffic",
+      "name": "MACHINE\\System\\CurrentControlSet\\Control\\Lsa\\MSV1_0\\RestrictReceivingNTLMTraffic",
+      "reg_type": "4"
+    },
+    {
+      "displayname": "Network security: Restrict NTLM: Add remote server exceptions for NTLM authentication",
+      "name": "MACHINE\\System\\CurrentControlSet\\Control\\Lsa\\MSV1_0\\ClientAllowedNTLMServers",
+      "reg_type": "7"
+    },
+    {
+      "displayname": "Network security: Restrict NTLM: Audit Incoming NTLM Traffic",
+      "name": "MACHINE\\System\\CurrentControlSet\\Control\\Lsa\\MSV1_0\\AuditReceivingNTLMTraffic",
+      "reg_type": "4"
+    },
+    {
+      "displayname": "Network security: Restrict NTLM: Add server exceptions in this domain",
+      "name": "MACHINE\\System\\CurrentControlSet\\Services\\Netlogon\\Parameters\\DCAllowedNTLMServers",
+      "reg_type": "7"
     },
     {
       "displayname": "Network security: Allow Local System to use computer identity for NTLM",
@@ -378,6 +413,11 @@
       "reg_type": "4"
     },
     {
+      "displayname": "Microsoft network server: Attempt S4U2Self to obtain claim information",
+      "name": "MACHINE\\System\\CurrentControlSet\\Services\\LanManServer\\Parameters\\EnableS4U2SelfForClaims",
+      "reg_type": "4"
+    },
+    {
       "displayname": "Microsoft network server: Digitally sign communications (always)",
       "name": "MACHINE\\System\\CurrentControlSet\\Services\\LanManServer\\Parameters\\RequireSecuritySignature",
       "reg_type": "4"
@@ -463,6 +503,16 @@
       "reg_type": "4"
     },
     {
+      "displayname": "Network security: Restrict NTLM: NTLM authentication in this domain",
+      "name": "MACHINE\\System\\CurrentControlSet\\Services\\Netlogon\\Parameters\\RestrictNTLMInDomain",
+      "reg_type": "4"
+    },
+    {
+      "displayname": "Network security: Restrict NTLM: Audit NTLM authentication in this domain",
+      "name": "MACHINE\\System\\CurrentControlSet\\Services\\Netlogon\\Parameters\\AuditNTLMInDomain",
+      "reg_type": "4"
+    },
+    {
       "displayname": "System objects: Require case insensitivity for non-Windows subsystems",
       "name": "MACHINE\\System\\CurrentControlSet\\Control\\Session Manager\\Kernel\\ObCaseInsensitive",
       "reg_type": "4"
@@ -487,6 +537,10 @@
     {
       "displayname": "Obtain an impersonation token for another user in the same session",
       "name": "SeDelegateSessionUserImpersonatePrivilege"
+    },
+    {
+      "displayname": "Impersonate a client after authentication",
+      "name": "SeImpersonatePrivilege"
     },
     {
       "displayname": "Access Credential Manager as a trusted caller",

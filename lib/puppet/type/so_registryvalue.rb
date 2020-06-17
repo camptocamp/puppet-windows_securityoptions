@@ -15,7 +15,7 @@ Puppet::Type.newtype(:so_registryvalue) do
     newparam(:name, :namevar => true) do
     #    desc 'The long name of the setting as it shows up in the local security policy'
       validate do |value|
-        raise ArgumentError, "Invalid Policy name: \'#{value}\'" unless PuppetX::Securityoptions::Mappingtables.new.valid_name?(value,'RegistryValues')
+        raise ArgumentError, "Invalid Policy name: \'#{value}\'" unless PuppetX::Securityoptions::Mappingtables.new.valid_displayname?(value,'RegistryValues')
       end
 #
     end
