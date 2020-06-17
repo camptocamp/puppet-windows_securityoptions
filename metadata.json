@@ -8,12 +8,23 @@
   "project_page": "https://git.swissre.com/users/s8d32w/repos/puppet-securityoptions",
   "issues_url": "https://git.swissre.com/users/s8d32w/repos/puppet-securityoptions",
   "dependencies": [
+
   ],
   "operatingsystem_support": [
     {
       "operatingsystem": "Windows",
       "operatingsystemrelease": [
+
       ]
     }
-  ]
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.10.0 < 7.0.0"
+    }
+  ],
+  "pdk-version": "1.17.0",
+  "template-url": "pdk-default#1.17.0",
+  "template-ref": "tags/1.17.0-0-gd3a4319"
 }

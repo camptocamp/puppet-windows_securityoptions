@@ -1,5 +1,0 @@
-fixtures:
-  forge_modules:
-    inifile: 'puppetlabs/inifile'
-  symlinks:
-    ura: "#{source_dir}"
