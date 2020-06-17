@@ -6,17 +6,10 @@ Puppet::Type.type(:so_systemaccess).provide(:so_systemaccess, parent: Puppet::Pr
   require Pathname.new(__FILE__).dirname + '../../../puppet_x/securityoptions/secedit_mapping'
   defaultfor :osfamily => :windows
   confine :osfamily => :windows
-<<<<<<< HEAD
-
-  commands :secedit => 'secedit.exe'
-    attr_so_accessor(:sovalue)
-=======
 
   commands :secedit => 'secedit.exe'
 
   attr_so_accessor(:sovalue)
->>>>>>> 34ddb99... realign code
-
 
   def write_export_filename
     'soimports'
