@@ -13,6 +13,8 @@ Puppet::Type.newtype(:so_registryvalue) do
     end
 
     newparam(:name, :namevar => true, :parent => Puppet::Parameter::Windows_SecurityOptions_Name) do
+        category { :RegistryValues }
+
         desc 'The long name of the setting as it shows up in the local security policy'
     end
 

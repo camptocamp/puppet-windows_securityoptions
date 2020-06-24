@@ -16,7 +16,7 @@ describe Puppet::Type.type(:user_rights_assignment) do
                     :title => 'abc',
                     :right => invalid_right_name,
                 )
-            }.to raise_error(Puppet::Error, /Invalid right name: '#{invalid_right_name}'/)
+            }.to raise_error(Puppet::ResourceError, /Invalid display name.*: '#{invalid_right_name}'/)
         end
     end
 end

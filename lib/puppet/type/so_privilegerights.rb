@@ -12,6 +12,8 @@ Puppet::Type.newtype(:so_privilegerights) do
     end
 
     newparam(:name, :namevar => true, :parent => Puppet::Parameter::Windows_SecurityOptions_Name) do
+        category { :PrivilegeRights }
+
         desc 'The long name of the privilege right as it shows up in the local security policy'
     end
 

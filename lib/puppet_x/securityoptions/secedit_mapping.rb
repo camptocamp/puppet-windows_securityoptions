@@ -21,7 +21,7 @@ module PuppetX
 
       def valid_name?(namevalue, category)
         mapping = mapping_table[category].find { |p| p['name'].downcase == namevalue.downcase}
-        if mapping 
+        if mapping
           return true
         else
           return false
@@ -29,7 +29,7 @@ module PuppetX
       end
       def valid_displayname?(namevalue, category)
         mapping = mapping_table[category].find { |p| p['displayname'].downcase == namevalue.downcase}
-        if mapping 
+        if mapping
           return true
         else
           return false
@@ -39,7 +39,7 @@ module PuppetX
 
       def get_mapping(namevalue, category)
         mapping = mapping_table[category].find { |p| p['displayname'].downcase == namevalue.downcase}
-        return mapping 
+        return mapping
       end
     end
   end

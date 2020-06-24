@@ -10,6 +10,8 @@ Puppet::Type.newtype(:so_privilegerights_fragment) do
     end
 
     newparam(:right, :parent => Puppet::Parameter::Windows_SecurityOptions_Name) do
+        category { :PrivilegeRights }
+
         desc 'The right to append users to...long displayname from secedit_mapping.json'
     end
 

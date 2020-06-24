@@ -13,7 +13,7 @@ describe Puppet::Type.type(:so_systemaccess) do
 
     let(:resourceint) { Puppet::Type.type(:so_systemaccess).new(:name => int_resource_name) }
     let(:resourcestr) { Puppet::Type.type(:so_systemaccess).new(:name => str_resource_name) }
-    
+
   context 'when validating ensure' do
         it 'should be ensurable' do
             expect(described_class.attrtype(:ensure)).to eq(:property)
@@ -48,7 +48,7 @@ describe Puppet::Type.type(:so_systemaccess) do
             described_class.new(
                 :name => invalid_name,
             )
-        }.to raise_error(Puppet::ResourceError, /Invalid Policy name: \'Shutdown: Why do you want to shutdown\'/)
+        }.to raise_error(Puppet::ResourceError, /Invalid display name: \'Shutdown: Why do you want to shutdown\'/)
     end
     it 'should pass with a valid name' do
         expect {
@@ -63,15 +63,15 @@ describe Puppet::Type.type(:so_systemaccess) do
 
   context 'when setting so_value property' do
     it 'if type qstring should return quoted string, even if it is not quoted' do
-        resourcestr[:sovalue] = 'quotedstring' 
+        resourcestr[:sovalue] = 'quotedstring'
         expect(resourcestr[:sovalue]).to eq('"quotedstring"')
     end
     it 'if type qstring should return quoted string, even if it is passed an integer' do
-        resourcestr[:sovalue] = 4 
+        resourcestr[:sovalue] = 4
         expect(resourcestr[:sovalue]).to eq('"4"')
     end
     it 'if type qstring should return quoted string if it is already quoated' do
-        resourcestr[:sovalue] = '"quotedstring"' 
+        resourcestr[:sovalue] = '"quotedstring"'
         expect(resourcestr[:sovalue]).to eq('"quotedstring"')
     end
     it 'if type integer should return integer when passed integer' do
@@ -79,7 +79,7 @@ describe Puppet::Type.type(:so_systemaccess) do
         expect(resourceint[:sovalue]).to eq(0)
     end
     it 'if type integer should return integer when passed string that can be converted to integer' do
-        resourceint[:sovalue] ="0" 
+        resourceint[:sovalue] ="0"
         expect(resourceint[:sovalue]).to eq(0)
     end
     it 'if type integer should fail when passed a string that cannot be converted to an integer' do
