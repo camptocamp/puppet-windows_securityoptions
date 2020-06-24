@@ -23,22 +23,22 @@ class Puppet::Provider::Windows_SecurityOptions < Puppet::Provider
   end
 
   def flush
-    tmp_sdb_file = File.join(Puppet[:vardir], 'secedit.sdb').gsub('/', '\\')
+    tmp_sdb_file = File.join(Puppet[:vardir], 'secedit.sdb').tr('/', '\\')
     secedit('/configure', '/db', tmp_sdb_file, '/cfg', in_file_path)
   end
 
   def self.prefetch(resources)
     instances.each do |right|
-      resources.select { |title, res|
-        res[:name].downcase == right.get(:name).downcase
-      }.map { |name, res|
+      resources.select { |_title, res|
+        res[:name].casecmp(right.get(:name).downcase).zero?
+      }.map do |_name, res|
         res.provider = right
-      }
+      end
     end
   end
 
   def self.get_secedit_exports
-    out_file_path = File.join(Puppet[:vardir], 'secedit_exports.txt').gsub('/', '\\')
+    out_file_path = File.join(Puppet[:vardir], 'secedit_exports.txt').tr('/', '\\')
     # Once the file exists in UTF-8, secedit will also use UTF-8
     File.open(out_file_path, 'w') { |f| f.write('# We want UTF-8') }
     secedit('/export', '/cfg', out_file_path)
@@ -46,10 +46,9 @@ class Puppet::Provider::Windows_SecurityOptions < Puppet::Provider
   end
 
   def self.secedit_exports
-    puts "in secedit_exports"
+    puts 'in secedit_exports'
     @exports ||= get_secedit_exports
   end
-
 
   def self.attr_so_reader(name)
     define_method(name) do
@@ -69,27 +68,25 @@ class Puppet::Provider::Windows_SecurityOptions < Puppet::Provider
     attr_so_writer(name)
   end
 
-
-
   def in_file_path
-    option = @resource[:name].scan(/[\da-z]/i).join
-    File.join(Puppet[:vardir], write_export_filename, "#{option}.txt").gsub('/', '\\')
+    option = @resource[:name].scan(%r{[\da-z]}i).join
+    File.join(Puppet[:vardir], write_export_filename, "#{option}.txt").tr('/', '\\')
   end
 
   def map_option(option)
     option
   end
 
-  def map_value(option, value)
+  def map_value(_option, value)
     [value]
   end
 
   def write_export_filename
-    fail "write_export_filename needs to be implemented"
+    raise 'write_export_filename needs to be implemented'
   end
 
   def section_name
-    fail "section_name needs to be implemented"
+    raise 'section_name needs to be implemented'
   end
 
   def write_export(option, value)

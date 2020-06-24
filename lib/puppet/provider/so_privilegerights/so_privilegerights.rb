@@ -3,10 +3,10 @@ require 'puppet/util/windows'
 require File.join(File.dirname(__FILE__), '../../../puppet/provider/windows_securityoptions')
 
 Puppet::Type.type(:so_privilegerights).provide(:so_privilegerights, parent: Puppet::Provider::Windows_SecurityOptions) do
-  defaultfor :osfamily => :windows
-  confine :osfamily => :windows
+  defaultfor osfamily: :windows
+  confine osfamily: :windows
 
-  commands :secedit => 'secedit.exe'
+  commands secedit: 'secedit.exe'
 
   attr_so_accessor(:sid)
 
@@ -26,14 +26,11 @@ Puppet::Type.type(:so_privilegerights).provide(:so_privilegerights, parent: Pupp
     name_to_sid(value)
   end
 
-
   def self.instances
-    secedit_exports.get_settings('Privilege Rights').map { |k, v|
-      new({
-        :name   => k,
-        :ensure => :present,
-        :sid    => v.split(','),
-      })
-    }
+    secedit_exports.get_settings('Privilege Rights').map do |k, v|
+      new(name: k,
+          ensure: :present,
+          sid: v.split(','))
+    end
   end
 end
