@@ -1,5 +1,6 @@
+require 'puppet/parameter/windows_securityoptions_name'
+
 Puppet::Type.newtype(:so_privilegerights) do
-    require Pathname.new(__FILE__).dirname + '../../puppet_x/securityoptions/secedit_mapping'
     @doc = <<-'EOT'
     Manage a Windows User Rights Assignment.
     EOT
@@ -10,16 +11,8 @@ Puppet::Type.newtype(:so_privilegerights) do
         defaultto { :present }
     end
 
-    newparam(:name, :namevar => true) do
+    newparam(:name, :namevar => true, :parent => Puppet::Parameter::Windows_SecurityOptions_Name) do
         desc 'The long name of the privilege right as it shows up in the local security policy'
-
-        validate do |value|
-           raise ArgumentError,  "Invalid display name: '#{value}'" unless PuppetX::Securityoptions::Mappingtables.new.valid_displayname?(value,'PrivilegeRights')
-        end
-
-        munge do |value|
-            value.downcase
-        end
     end
 
     newproperty(:sid, :array_matching => :all) do

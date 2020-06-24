@@ -1,4 +1,5 @@
 require 'pathname'
+require 'puppet/parameter/windows_securityoptions_name'
 
 Puppet::Type.newtype(:so_registryvalue) do
     require Pathname.new(__FILE__).dirname + '../../puppet_x/securityoptions/secedit_mapping'
@@ -11,11 +12,8 @@ Puppet::Type.newtype(:so_registryvalue) do
         defaultto { :present }
     end
 
-    newparam(:name, :namevar => true) do
-      desc 'The long name of the setting as it shows up in the local security policy'
-      validate do |value|
-        raise ArgumentError, "Invalid Policy name: \'#{value}\'" unless PuppetX::Securityoptions::Mappingtables.new.valid_displayname?(value,'RegistryValues')
-      end
+    newparam(:name, :namevar => true, :parent => Puppet::Parameter::Windows_SecurityOptions_Name) do
+        desc 'The long name of the setting as it shows up in the local security policy'
     end
 
     newproperty(:sovalue) do
