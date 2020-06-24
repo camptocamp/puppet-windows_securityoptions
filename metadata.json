@@ -1,12 +1,12 @@
 {
-  "name": "johnnyboy-securityoptions",
+  "name": "camptocamp-windows_securityoptions",
   "version": "0.1.0",
   "author": "Johnny Boy",
-  "summary": "Puppet Security Options module",
+  "summary": "Puppet module for Windows Local Security Policy types",
   "license": "Apache-2.0",
-  "source": "https://git.swissre.com/users/s8d32w/repos/puppet-securityoptions",
-  "project_page": "https://git.swissre.com/users/s8d32w/repos/puppet-securityoptions",
-  "issues_url": "https://git.swissre.com/users/s8d32w/repos/puppet-securityoptions",
+  "source": "https://github.com/camptocamp/puppet-windows_securityoptions",
+  "project_page": "https://github.com/camptocamp/puppet-windows_securityoptions",
+  "issues_url": "https://github.com/camptocamp/puppet-windows_securityoptions/issues",
   "dependencies": [
 
   ],
