@@ -11,7 +11,7 @@ Puppet::Type.newtype(:so_privilegerights_fragment) do
         desc 'The right to append users to...long displayname from secedit_mapping.json'
 
         validate do |value|
-           raise ArgumentError,  "Invalid display name: '#{value}'" unless PuppetX::Securityoptions::Mappingtables.new.valid_name?(value,'PrivilegeRights')
+           raise ArgumentError,  "Invalid display name: '#{value}'" unless PuppetX::Securityoptions::Mappingtables.new.valid_displayname?(value,'PrivilegeRights')
        #     fail "Not a valid right name: '#{value}'" unless value =~ /^[A-Za-z\s]+$/
        #   raise ArgumentError, "Invalid right name: \'#{value}\'" unless PuppetX::Securityoptions::Mappingtables.new.valid_name?(value,'PrivilegeRights')
         end
@@ -25,6 +25,6 @@ Puppet::Type.newtype(:so_privilegerights_fragment) do
 
         desc 'List of SIDs to append to the right'
         #...well no exactly SIDs --> COPR\Administrators
-        # do we want to validate it somehow? 
+        # do we want to validate it somehow?
     end
 end

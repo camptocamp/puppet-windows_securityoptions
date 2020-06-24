@@ -12,7 +12,7 @@ Puppet::Type.newtype(:user_rights_assignment) do
 
         validate do |value|
        #     fail "Not a valid right name: '#{value}'" unless value =~ /^[A-Za-z\s]+$/
-          raise ArgumentError, "Invalid right name: \'#{value}\'" unless PuppetX::Securityoptions::Mappingtables.new.valid_name?(value,'PrivilegeRights')
+          raise ArgumentError, "Invalid right name: \'#{value}\'" unless PuppetX::Securityoptions::Mappingtables.new.valid_displayname?(value,'PrivilegeRights')
         end
 
        # munge do |value|
@@ -23,6 +23,6 @@ Puppet::Type.newtype(:user_rights_assignment) do
     newparam(:sid) do
         desc 'List of SIDs to append to the right'
         #...well no exactly SIDs --> COPR\Administrators
-        # do we want to validate it somehow? 
+        # do we want to validate it somehow?
     end
 end

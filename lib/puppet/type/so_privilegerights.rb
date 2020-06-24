@@ -14,7 +14,7 @@ Puppet::Type.newtype(:so_privilegerights) do
         desc 'The long name of the privilege right as it shows up in the local security policy'
 
         validate do |value|
-           raise ArgumentError,  "Invalid display name: '#{value}'" unless PuppetX::Securityoptions::Mappingtables.new.valid_name?(value,'PrivilegeRights')
+           raise ArgumentError,  "Invalid display name: '#{value}'" unless PuppetX::Securityoptions::Mappingtables.new.valid_displayname?(value,'PrivilegeRights')
         end
 
         munge do |value|
@@ -30,9 +30,9 @@ Puppet::Type.newtype(:so_privilegerights) do
             @fragments ||= resource.catalog.resources.map { |res|
                 next unless (
 			res.is_a?(Puppet::Type.type(:so_privilegerights_fragment)) or
-			res.is_a?(Puppet::Type.type(:user_right_assignment)) 
+			res.is_a?(Puppet::Type.type(:user_right_assignment))
 		)
-                if res[:right] == @resource[:name] 
+                if res[:right] == @resource[:name]
                     res
                 end
             }.compact

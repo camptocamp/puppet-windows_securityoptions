@@ -16,17 +16,17 @@ describe PuppetX::Securityoptions::Mappingtables do
 
   let(:hashfromjson) {
     {
-     "SystemAccess" => 
+     "SystemAccess" =>
       [
-        {"displayname"=>"Enforce password history", 
-         "name"=>"PasswordHistorySize", 
+        {"displayname"=>"Enforce password history",
+         "name"=>"PasswordHistorySize",
          "data_type"=>"integer"
         },
         {"displayname"=>"Accounts: Rename administrator account",
          "name"=>"NewAdministratorName",
          "data_type"=>"qstring"
         }
-      ], 
+      ],
      "RegistryValues" =>
       [
         {"displayname"=>"Audit: Force audit policy subcategory settings (Windows Vista or later) to override audit policy category settings",
@@ -54,7 +54,7 @@ describe PuppetX::Securityoptions::Mappingtables do
   mapping_instance = described_class.new
 
   it 'check for valid displayname' do
-    expect(mapping_instance.valid_name?(rvdisplayname,'RegistryValues')).to be_truthy
+    expect(mapping_instance.valid_displayname?(rvdisplayname,'RegistryValues')).to be_truthy
   end
   it 'check for valid name' do
     expect(mapping_instance.get_displayname(rvname,'RegistryValues')).to eq(rvdisplayname)
