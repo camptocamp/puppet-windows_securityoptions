@@ -11,17 +11,15 @@ Puppet::Type.newtype(:so_registryvalue) do
         defaultto { :present }
     end
 
-    #newparam(:name, :namevar => true) do
     newparam(:name, :namevar => true) do
-    #    desc 'The long name of the setting as it shows up in the local security policy'
+      desc 'The long name of the setting as it shows up in the local security policy'
       validate do |value|
         raise ArgumentError, "Invalid Policy name: \'#{value}\'" unless PuppetX::Securityoptions::Mappingtables.new.valid_displayname?(value,'RegistryValues')
       end
-#
     end
-#
+
     newproperty(:sovalue) do
-      desc "the value of the registry setting" 
+      desc "the value of the registry setting"
 
       validate do |value|
 
@@ -43,14 +41,14 @@ Puppet::Type.newtype(:so_registryvalue) do
       munge do |value|
         res_mapping = PuppetX::Securityoptions::Mappingtables.new.get_mapping(resource[:name], 'RegistryValues')
         if res_mapping['reg_type'] == '4' then
-          return value.to_i 
+          return value.to_i
         elsif res_mapping['reg_type'] == '1' then
-          value = value.to_s 
+          value = value.to_s
           return "\"" + value.tr('"', '') + "\""
         elsif res_mapping['reg_type'] == '7' then
           return '' if value.nil?
           value = value.to_s
-          return value 
+          return value
         end
       end
     end
