@@ -1,5 +1,5 @@
 require 'pathname'
-require 'puppet/parameter/windows_securityoptions_name'
+require 'puppet/parameter/windows_securityoptions_displayname'
 
 Puppet::Type.newtype(:so_systemaccess) do
   require Pathname.new(__FILE__).dirname + '../../puppet_x/securityoptions/secedit_mapping'
@@ -12,7 +12,7 @@ Puppet::Type.newtype(:so_systemaccess) do
     defaultto { :present }
   end
 
-  newparam(:name, namevar: true, parent: Puppet::Parameter::Windows_SecurityOptions_Name) do
+  newparam(:name, namevar: true, parent: Puppet::Parameter::Windows_SecurityOptions_Displayname) do
     category { :SystemAccess }
 
     desc 'The long name of the setting as it shows up in the local security policy'
