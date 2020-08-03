@@ -46,7 +46,7 @@ Puppet::Type.newtype(:so_privilegerights) do
     def insync?(current_sids)
       return false unless current_sids
       specified_sids = provider.name_to_sid(@should)
-      (specified_sids & current_sids) == specified_sids
+      (specified_sids & current_sids) == (specified_sids | current_sids)
     end
   end
 end
