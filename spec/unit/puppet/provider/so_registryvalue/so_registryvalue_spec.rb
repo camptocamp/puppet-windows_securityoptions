@@ -133,6 +133,7 @@ describe Puppet::Type.type(:so_registryvalue).provider(:so_registryvalue) do
   end
 
   def stub_write_export(value)
+    allow(File).to receive(:open).and_call_original
     expect(Puppet).to receive(:[]).at_least(:once).with(:vardir).and_return(vardir)
     expect(Dir).to receive(:mkdir).at_least(:once).with(File.join(vardir, 'soimports'))
     writeFile = StringIO.new
