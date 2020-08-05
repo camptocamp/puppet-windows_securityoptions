@@ -1,6 +1,9 @@
 ---
 .rubocop.yml:
   selected_profile: cleanups_only
+.travis.yml:
+  user: camptocamp
+  secure: "5uSZ5ThntvyfbSsKxMIA5yfhaGvmfpfsk917IaJWfVE8cQ4GQLztWwLSweHxCK3Cq6zzVHeFhm345A+b6d+o2u/nblNvPEp8i20+sW1gFo3c7vujfAxDbAWmtwVGWoO+pmGZwjOkD5RKqqFH6s52ha0GSwftdxcjj3uZwd1ig5/+g7qvWfQTLAOl09h75OBR7AfY7KHxKmQw2o69TfAI0lhqR9lacfNtq/2TP7L6QjlgJ0q3k57fPWJ9lsNQnmOLOnf55/GWU02tOqPBM8NJoSOcR8tfaFFzoZbOXC1DyljpEqOzoJ7RzlB+yyFIDbinvW82lHAZThcfkON0lQqjHpqOraI+FT30KdxY1+r5vSAO4xCL7eNlUtOjRwE6DuhZm0icLyY6s+C/yqvt0mFNANfVKoHheLo5kn/8v14GeGWG6o6i4loi4fGT3+0VKs6XnhU1uAJPrqwRRxnWUGFN0EgjNEbda3ZywkXdbG0sUrQwIR/1zuayw08TWFjjbRbonK6BpS0RKogWAFReGuvvZgM7RBzAH73a8umkTHZi9FiSEp+AYSkPBkLIeuiTpuNTGCBMOsVFyKHMOK2w/5dj95TEZC2VQh3hfXbBhomS0JQojNVmWM1xiC3kdECnXh+wcJjAx1izKyIaNoXlNw85fZaEnyUCkKSrFLXoW9cSlXQ="
 Gemfile:
   optional:
     ':development':
