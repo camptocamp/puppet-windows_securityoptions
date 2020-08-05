@@ -22,7 +22,7 @@ Puppet::Type.type(:so_privilegerights).provide(:so_privilegerights, parent: Pupp
     users.map { |user| '*' + Puppet::Util::Windows::SID.name_to_sid(user) }
   end
 
-  def map_value(value)
+  def map_value(_option, value)
     name_to_sid(value)
   end
 
