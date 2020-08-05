@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## [v0.1.0](https://github.com/Camptocamp/puppet-windows_securityoptions/tree/v0.1.0) (UNRELEASED)
+## [v0.1.0](https://github.com/Camptocamp/puppet-windows_securityoptions/tree/v0.1.0) (2020-08-05)
 
 [Full Changelog](https://github.com/Camptocamp/puppet-windows_securityoptions/compare/01ff6f07f04f6f1ceb044d9c5ddeac5f20aa2cc4...v0.1.0)
 
