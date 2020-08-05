@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Puppet::Type.type(:so_privilegerights) do
   let(:invalid_name) { 'Manage invalide privilege right name' }
-  let(:valid_name) { 'Access this computer from the network' }
+  let(:valid_name) { 'SeNetworkLogonRight' }
 
   context 'when using namevar' do
     it 'has a namevar' do
@@ -17,7 +17,7 @@ describe Puppet::Type.type(:so_privilegerights) do
         described_class.new(
           name: invalid_name,
         )
-      }.to raise_error(Puppet::ResourceError, %r{Invalid display name: \'Manage invalide privilege right name\'})
+      }.to raise_error(Puppet::ResourceError, %r{Invalid name: \'Manage invalide privilege right name\'})
     end
 
     it 'passes with a valid name' do

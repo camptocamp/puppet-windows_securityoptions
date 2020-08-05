@@ -12,15 +12,15 @@ class Puppet::Parameter::Windows_SecurityOptions_Name < Puppet::Parameter
   end
 
   def unsafe_validate(value)
-    raise ArgumentError, "Invalid name: '#{value}'" unless valid_name?(value)
-  end
+    cat = self.class.category
 
-  def valid_name?(value)
-    cat = self.class.category.to_s
-    return PuppetX::Securityoptions::Mappingtables.new.valid_name?(value, cat) \
-      if cat == :PrivilegeRights
-
-    PuppetX::Securityoptions::Mappingtables.new.valid_displayname?(value, cat)
+    if cat == :PrivilegeRights
+      raise ArgumentError, "Invalid name: '#{value}'" \
+        unless PuppetX::Securityoptions::Mappingtables.new.valid_name?(value, cat.to_s)
+    else
+      raise ArgumentError, "Invalid display name: '#{value}'" \
+        unless PuppetX::Securityoptions::Mappingtables.new.valid_displayname?(value, cat.to_s)
+    end
   end
 
   munge do |value|
