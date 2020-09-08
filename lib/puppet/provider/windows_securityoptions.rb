@@ -46,7 +46,6 @@ class Puppet::Provider::Windows_SecurityOptions < Puppet::Provider
   end
 
   def self.secedit_exports
-    puts 'in secedit_exports'
     @exports ||= get_secedit_exports
   end
 
