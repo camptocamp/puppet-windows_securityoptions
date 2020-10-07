@@ -2,7 +2,7 @@ require 'puppet/parameter/windows_securityoptions_name'
 
 Puppet::Type.newtype(:so_privilegerights) do
   @doc = <<-'EOT'
-    Manage a Windows User Rights Assignment.
+    Manages a Windows User Rights Assignment.  User Right Assignments determine what a particular security object is allowed to do an a Windows Server.
     EOT
 
   ensurable do
@@ -14,14 +14,16 @@ Puppet::Type.newtype(:so_privilegerights) do
   newparam(:name, namevar: true, parent: Puppet::Parameter::Windows_SecurityOptions_Name) do
     category { :PrivilegeRights }
 
-    desc 'The long name of the privilege right as it shows up in the local security policy'
+    desc 'The shortname of the user right assignment.'
   end
 
   newproperty(:sid, array_matching: :all) do
-    desc 'List of SIDs to allow for this right'
+    desc 'List of security objects to allow for this right'
 
     def fragments
       # Collect fragments that target this resource by name or title.
+      # the user_rigth_assignment is an old type that is being phased out
+      # this will be removed in future versions
       @fragments ||= resource.catalog.resources.map { |res|
         next unless
   res.is_a?(Puppet::Type.type(:so_privilegerights_fragment)) ||
