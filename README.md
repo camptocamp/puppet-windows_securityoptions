@@ -19,6 +19,8 @@ The secedit_mapping.json file is manually maintained and originated from local_s
 
 We created this new module because we needed the ability to dynamically modify the User Rights Assignment definitions based on profiles/classes that were in scope for the desired puppet role.  There was not a way to use hiera to accomplish this, and unfortunately neither was module based hiera.  After identifying this need, it was determined that we could also consolidate a lot of the code and drastically reduce redundancy of code.
 
+It was decided no to support the Audit section of the secedit file, as most current systems implement the Advanced Audit Configuration, which is handled by the auditpol.exe utility and no longer uses the previous, basic configuration foudn in the secedit configuration.
+
 ##types
 
 ###so_privilegerights_type
