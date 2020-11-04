@@ -11,7 +11,7 @@ Puppet::Type.type(:so_privilegerights).provide(:so_privilegerights, parent: Pupp
   attr_so_accessor(:sid)
 
   def write_export_filename
-    'secedit_export'
+    'primports'
   end
 
   def section_name

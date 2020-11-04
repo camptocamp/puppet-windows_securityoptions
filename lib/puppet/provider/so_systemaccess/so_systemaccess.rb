@@ -12,7 +12,7 @@ Puppet::Type.type(:so_systemaccess).provide(:so_systemaccess, parent: Puppet::Pr
   attr_so_accessor(:sovalue)
 
   def write_export_filename
-    'soimports'
+    'saimports'
   end
 
   def map_option(securityoption)
