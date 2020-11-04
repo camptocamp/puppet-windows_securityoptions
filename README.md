@@ -2,6 +2,7 @@
 
 #### Table of Contents
 1. [Overview](#overview)
+2. [Usage](#usage)
 2. [Types](#types)
    * [so_privilegerights](#so_privilegerights_type)
    * [so_privilegerights_fragment](#so_privilegerights_fragment_type)
@@ -10,7 +11,7 @@
 3. [Providers](#providers)
 4. [Puppet_X](#puppetx)
 
-##overview
+## Overview
 The securityoptions providers use the secedit.exe utility from microsoft to manage the settings.  Specifically, it managed the following sections of the secedit output: Privilege Rights, Registry Values, System Access.  It does not manage the Event Audit section.
 
 The three providers share a common parent, windows_securityoptions.  When the first resource type is instantiated, the secedit.exe command is run and C:\ProgramData\PuppetLabs\puppet\cache\secedit_exports.txt is created.  This same file is read by all the providers.
@@ -21,9 +22,9 @@ We created this new module because we needed the ability to dynamically modify t
 
 It was decided no to support the Audit section of the secedit file, as most current systems implement the Advanced Audit Configuration, which is handled by the auditpol.exe utility and no longer uses the previous, basic configuration foudn in the secedit configuration.
 
-##types
+## Types
 
-###so_privilegerights_type
+### so_privilegerights_type
 This type configures the user rights assignments in Windows.  The so_privilegerights resource fully manages the resource, meaning that all security identifiers must be listed in the sid property.  In the example below, the machine will be configured to allow the domain user user1, the domain group group1, and the built-in Administrators group to Change the time zone.
 ```puppet
 so_privilegerights{'setimezoneprivilege':
@@ -32,7 +33,7 @@ so_privilegerights{'setimezoneprivilege':
  }
 ```
 
-###so_privilegerights_fragment_type
+### so_privilegerights_fragment_type
 In Windows, the User Rights Assignments are typically managed via GPOs which allow for a merging across multiple GPOS.  A typical scenario would be that domain admins confiugre a baseline GPO that has all of the default User Rights Assignment listed and then for machines running IIS or SQL Server, a second GPO would be created and applied that had the IIS or SQL specific security objects given permissions to the appropriate user rights.  So when the GPO is applied to the machine the 2 GPOs are then merged.
 
 In puppet this works differently, as we can only manage a particular resource one time.  This means we have to merge the data prior to applying the resource.
@@ -48,9 +49,13 @@ so_privilegerights_fragment { 'iis_seassignprimarytokenprivilege':
   sid   => ['BUILTIN\IIS_IUSRS'],
 }
 ```
-###so_registryvalue_type
-###so_systemaccess_type
+### so_registryvalue_type
+### so_systemaccess_type
 
+## Providers
+### so_privilegerights
+### so_registryvalue
+### so_systemaccess
 
 [![Puppet Forge Version](http://img.shields.io/puppetforge/v/camptocamp/windows_securityoptions.svg)](https://forge.puppetlabs.com/camptocamp/windows_securityoptions)
 [![Puppet Forge Downloads](http://img.shields.io/puppetforge/dt/camptocamp/windows_securityoptions.svg)](https://forge.puppetlabs.com/camptocamp/windows_securityoptions)
