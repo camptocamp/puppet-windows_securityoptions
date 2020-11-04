@@ -9,6 +9,10 @@
 #### Table of Contents
 1. [Overview](#overview)
 2. [Usage](#usage)
+   * [so_privilegerights](#soprivilegerights-type)
+   * [so_privilegerights_fragment](#soprivilegerightsfragment-type)
+   * [so_registryvalue](#soregistryvalue-type)
+   * [so_systemaccess](#sosystemaccess-type)
 3. [Reference](#reference)
 4. [Development](#development)
 
