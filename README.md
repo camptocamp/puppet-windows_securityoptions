@@ -77,6 +77,10 @@ is installed using the puppet profile, the correct user rights are applied
 to the machine:
 
 ```puppet
+so_privilegerights { 'seassignprimarytokenprivilege':
+  ensure => present,
+}
+
 so_privilegerights_fragment { 'iis_seassignprimarytokenprivilege':
   right => 'seassignprimarytokenprivilege',
   sid   => ['BUILTIN\IIS_IUSRS'],
