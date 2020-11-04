@@ -6,8 +6,8 @@
 
 ### Resource types
 
-* [`so_privilegerights`](#so_privilegerights): Manage a Windows User Rights Assignment.
-* [`so_privilegerights_fragment`](#so_privilegerights_fragment): Append users to a so_privilegerights resource.
+* [`so_privilegerights`](#so_privilegerights): Manages a Windows User Rights Assignment.  User Right Assignments determine what a particular security object is allowed to do an a Windows S
+* [`so_privilegerights_fragment`](#so_privilegerights_fragment): Append users to a so_privilegerights resource.  This type functions similar to the concat type that allows fragments to be inserted into the 
 * [`so_registryvalue`](#so_registryvalue): Manage a Windows User Rights Assignment.
 * [`so_systemaccess`](#so_systemaccess): Manage a Windows User Rights Assignment.
 
@@ -15,7 +15,7 @@
 
 ### `so_privilegerights`
 
-Manage a Windows User Rights Assignment.
+Manages a Windows User Rights Assignment.  User Right Assignments determine what a particular security object is allowed to do an a Windows Server.
 
 #### Properties
 
@@ -31,7 +31,7 @@ Default value: `present`
 
 ##### `sid`
 
-List of SIDs to allow for this right
+List of security objects to allow for this right
 
 #### Parameters
 
@@ -41,7 +41,7 @@ The following parameters are available in the `so_privilegerights` type.
 
 namevar
 
-The long name of the privilege right as it shows up in the local security policy
+The shortname of the user right assignment.
 
 ##### `provider`
 
@@ -50,7 +50,7 @@ usually discover the appropriate provider for your platform.
 
 ### `so_privilegerights_fragment`
 
-Append users to a so_privilegerights resource.
+Append users to a so_privilegerights resource.  This type functions similar to the concat type that allows fragments to be inserted into the catalog and then used by the so_privilegerights provider.  This allows for authors of profiles to add the necessary user right assignments needed by their profile without having to add hiera data to roles.
 
 #### Parameters
 
@@ -64,11 +64,12 @@ The mandatory namevar...just name it however you want
 
 ##### `right`
 
-The right to append users to...long displayname from secedit_mapping.json
+The right to append users to.  This is the shortname of the user right, for example: sesyncagentprivilege
 
 ##### `sid`
 
-List of SIDs to append to the right
+List of security object to append to the user right assignment.  This is any security object that has an SID, eg user,
+group, service account.
 
 ### `so_registryvalue`
 
