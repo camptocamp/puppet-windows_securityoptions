@@ -135,9 +135,9 @@ describe Puppet::Type.type(:so_registryvalue).provider(:so_registryvalue) do
   def stub_write_export(value)
     allow(File).to receive(:open).and_call_original
     expect(Puppet).to receive(:[]).at_least(:once).with(:vardir).and_return(vardir)
-    expect(Dir).to receive(:mkdir).at_least(:once).with(File.join(vardir, 'soimports'))
+    expect(Dir).to receive(:mkdir).at_least(:once).with(File.join(vardir, 'rvimports'))
     writeFile = StringIO.new
-    expect(File).to receive(:open).at_least(:once).with('C:\\ProgramData\\PuppetLabs\\Puppet\\cache\\soimports\\auditaudittheuseofbackupandrestoreprivilege.txt', 'w').and_yield(writeFile)
+    expect(File).to receive(:open).at_least(:once).with('C:\\ProgramData\\PuppetLabs\\Puppet\\cache\\rvimports\\auditaudittheuseofbackupandrestoreprivilege.txt', 'w').and_yield(writeFile)
     expect(writeFile).to receive(:write).with("[Unicode]
 Unicode=yes
 [Registry Values]
@@ -158,7 +158,7 @@ Revision=1
       expect(provider.sovalue).to eq(nil)
       provider.sovalue = 3
       expect(provider.sovalue).to eq(3)
-      stub_flush('C:\\ProgramData\\PuppetLabs\\Puppet\\cache\\soimports\\auditaudittheuseofbackupandrestoreprivilege.txt')
+      stub_flush('C:\\ProgramData\\PuppetLabs\\Puppet\\cache\\rvimports\\auditaudittheuseofbackupandrestoreprivilege.txt')
       provider.flush
     end
   end

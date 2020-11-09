@@ -106,9 +106,9 @@ describe Puppet::Type.type(:so_systemaccess).provider(:so_systemaccess) do
   def stub_write_export(value)
     allow(File).to receive(:open).and_call_original
     expect(Puppet).to receive(:[]).at_least(:once).with(:vardir).and_return(vardir)
-    expect(Dir).to receive(:mkdir).at_least(:once).with(File.join(vardir, 'soimports'))
+    expect(Dir).to receive(:mkdir).at_least(:once).with(File.join(vardir, 'saimports'))
     writeFile = StringIO.new
-    expect(File).to receive(:open).at_least(:once).with('C:\\ProgramData\\PuppetLabs\\Puppet\\cache\\soimports\\enforcepasswordhistory.txt', 'w').and_yield(writeFile)
+    expect(File).to receive(:open).at_least(:once).with('C:\\ProgramData\\PuppetLabs\\Puppet\\cache\\saimports\\enforcepasswordhistory.txt', 'w').and_yield(writeFile)
     expect(writeFile).to receive(:write).with("[Unicode]
 Unicode=yes
 [System Access]
@@ -129,7 +129,7 @@ Revision=1
       expect(provider.sovalue).to eq(nil)
       provider.sovalue = 12
       expect(provider.sovalue).to eq(12)
-      stub_flush('C:\\ProgramData\\PuppetLabs\\Puppet\\cache\\soimports\\enforcepasswordhistory.txt')
+      stub_flush('C:\\ProgramData\\PuppetLabs\\Puppet\\cache\\saimports\\enforcepasswordhistory.txt')
       provider.flush
     end
   end
