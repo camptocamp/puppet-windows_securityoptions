@@ -10,7 +10,7 @@ describe Puppet::Type.type(:so_privilegerights).provider(:so_privilegerights) do
     {
       title: 'sechangenotifyprivilege',
       ensure: 'present',
-      sid: ['DOMAIN\user1','DOMAIN\group1'],
+      sid: ['DOMAIN\user1', 'DOMAIN\group1'],
       provider: :so_privilegerights,
     }
   end
@@ -59,7 +59,7 @@ describe Puppet::Type.type(:so_privilegerights).provider(:so_privilegerights) do
       stub_secedit_export
       provider.class.prefetch(hashresource)
       expect(resource.provider.exists?).to eq(true)
-      expect(resource.provider.sid).to eq(["*S-1-5-19", "*S-1-5-20", "*S-1-5-32-544", "*S-1-5-32-545", "*S-1-5-32-551"])
+      expect(resource.provider.sid).to eq(['*S-1-5-19', '*S-1-5-20', '*S-1-5-32-544', '*S-1-5-32-545', '*S-1-5-32-551'])
     end
   end
 
@@ -78,41 +78,6 @@ describe Puppet::Type.type(:so_privilegerights).provider(:so_privilegerights) do
     it 'lists all instances' do
       expect(@instances.size).to eq(32)
     end
-
-    #it 'finds Interactive logon with a quoted string (type 1)' do
-    #  example1 = @instances.find do |p|
-    #    p[:name].casecmp('Interactive logon: Smart card removal behavior'.downcase).zero?
-    #  end
-    #  expect(example1).to eq(name: 'Interactive logon: Smart card removal behavior',
-    #                         ensure: :present,
-    #                         sovalue: '"1"')
-    #end
-
-    #it 'finds Audit with an integer (type 3)' do
-    #  example3 = @instances.find do |p|
-    #    p[:name].casecmp('Audit: Audit the use of Backup and Restore privilege'.downcase).zero?
-    #  end
-    #  expect(example3).to eq(name: 'Audit: Audit the use of Backup and Restore privilege',
-    #                         ensure: :present,
-    #                         sovalue: 42)
-    #end
-
-    #it 'finds Recovery console with an integer (type 4)' do
-    #  example4 = @instances.find do |p|
-    #    p[:name].casecmp('Recovery console: Allow automatic administrative logon'.downcase).zero?
-    #  end
-    #  expect(example4).to eq(name: 'Recovery console: Allow automatic administrative logon',
-    #                         ensure: :present,
-    #                         sovalue: 0)
-    #end
-
-    #it 'finds System settings with an empty array (type 7)' do
-    #  example7a = @instances.find { |p| p[:name].casecmp('sechangenotifyprivilege'.downcase).zero? }
-    #  expect(example7a).to eq(name: 'System settings: Optional subsystems',
-    #                          ensure: :present,
-    #                          sid: 'asdfa')
-    #end
-
   end
 
   def stub_write_export(value)
@@ -136,13 +101,12 @@ Revision=1
   end
 
   context 'when updating value' do
-    #Puppet::Util::Windows::SID.stubs(:name_to_sid).with('DOMAIN\user2').returns('SYSTEM SID')
     Puppet::Util::Windows::SID.stubs(:name_to_sid).returns('S-1-5-19')
 
     it 'updates value' do
       stub_write_export(3)
       expect(provider.sid).to eq(nil)
-      provider.sid = ['DOMAIN\user2'] 
+      provider.sid = ['DOMAIN\user2']
       expect(provider.sid).to eq(['DOMAIN\user2'])
       stub_flush('C:\\ProgramData\\PuppetLabs\\Puppet\\cache\\primports\\sechangenotifyprivilege.txt')
       provider.flush
