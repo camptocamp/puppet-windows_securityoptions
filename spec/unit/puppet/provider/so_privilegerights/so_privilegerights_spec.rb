@@ -89,7 +89,7 @@ describe Puppet::Type.type(:so_privilegerights).provider(:so_privilegerights) do
     expect(writeFile).to receive(:write).with("[Unicode]
 Unicode=yes
 [Privilege Rights]
-sechangenotifyprivilege = *S-1-5-19
+sechangenotifyprivilege = #{value}
 [Version]
 signature=\"$CHICAGO$\"
 Revision=1
@@ -104,7 +104,7 @@ Revision=1
     Puppet::Util::Windows::SID.stubs(:name_to_sid).returns('S-1-5-19')
 
     it 'updates value' do
-      stub_write_export(3)
+      stub_write_export('*S-1-5-19')
       expect(provider.sid).to eq(nil)
       provider.sid = ['DOMAIN\user2']
       expect(provider.sid).to eq(['DOMAIN\user2'])
