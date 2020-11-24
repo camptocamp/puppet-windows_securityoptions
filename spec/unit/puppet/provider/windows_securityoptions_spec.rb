@@ -2,6 +2,7 @@ require 'spec_helper'
 
 
 Puppet::Type.newtype(:faketype) do
+  ensurable
   newparam(:name, namevar: true)
   newparam(:sid)
 end
@@ -57,6 +58,8 @@ describe Puppet::Provider::Windows_SecurityOptions do
       # FakeProvider will call write_export when creating the resource
       expect(resource.provider).to receive(:write_export).with('foo', 'FOO')
       resource.provider.create
+
+      expect(resource.provider.exists?).to eq(true)
     end
   end
 
@@ -65,6 +68,8 @@ describe Puppet::Provider::Windows_SecurityOptions do
       resource.provider = subject.class.instances[0]
       expect(resource.provider).to receive(:write_export).with('foo', [])
       resource.provider.destroy
+
+      expect(resource.provider.exists?).to eq(false)
     end
   end
 
